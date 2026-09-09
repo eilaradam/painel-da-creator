@@ -416,9 +416,17 @@ Views.propostas = (() => {
     function imprimir(html) {
         const j = window.open('', '_blank', 'width=820,height=900');
         if (!j) { UI.toast('Libere os pop-ups pra salvar em PDF', 'erro'); return; }
+
+        // leva junto o estilo desta página, seja ele um arquivo ou embutido.
+        // sem isso a proposta sai sem formatação quando o painel roda como arquivo único.
+        const estilos = Array.from(document.querySelectorAll('style'))
+            .map(s => s.outerHTML)
+            .concat(Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+                .map(l => `<link rel="stylesheet" href="${l.href}">`))
+            .join('\n');
+
         j.document.write(`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Proposta</title>
-            <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-            <link rel="stylesheet" href="css/app.css">
+            ${estilos}
             <style>body{padding:44px;background:#fff;max-width:760px;margin:0 auto}</style>
             </head><body>${html}</body></html>`);
         j.document.close();

@@ -19,6 +19,7 @@ Views.config = (() => {
         const s = Store.get();
         const totalItens = ['marcas', 'propostas', 'entregas', 'conteudos', 'lancamentos', 'postsIg']
             .reduce((t, k) => t + Store.lista(k).length, 0);
+        const local = location.protocol === 'file:';   // rodando do computador dela
 
         raiz.innerHTML = `
             <div class="grid g2" style="align-items:start">
@@ -71,6 +72,30 @@ Views.config = (() => {
                             <button class="btn btn-primary" id="cfPreco" type="button">Salvar tabela</button>
                         </div>
                     </section>
+
+                    ${local ? `
+                    <section class="panel" style="margin-bottom:16px">
+                        <div class="panel-body">
+                            <div class="note ok" style="margin:0">
+                                ${UI.icon('check')}
+                                <div><b>Você está usando a sua cópia instalada.</b> O painel está rodando direto do seu computador,
+                                então funciona mesmo sem internet. Só os vídeos das referências precisam de conexão.</div>
+                            </div>
+                        </div>
+                    </section>` : `
+                    <section class="panel" style="margin-bottom:16px">
+                        <div class="panel-head"><h3>💻 Levar o painel pro seu computador</h3></div>
+                        <div class="panel-body">
+                            <p style="margin:0 0 15px;font-size:13.5px;color:var(--soft);line-height:1.6">
+                                Baixe o painel como um arquivo só. Salve na área de trabalho, dê dois cliques e ele abre no navegador,
+                                funcionando igualzinho e sem depender de internet.
+                            </p>
+                            <button class="btn btn-primary" id="cfBaixarApp" type="button">${UI.icon('baixar', 15)} Baixar o meu painel</button>
+                            <p style="margin:12px 0 0;font-size:12.5px;color:var(--muted);line-height:1.5">
+                                Atenção: a cópia baixada guarda os dados dela separados desta página. Escolha um lugar e use sempre o mesmo.
+                            </p>
+                        </div>
+                    </section>`}
 
                     <section class="panel">
                         <div class="panel-head"><h3>Seus dados e backup</h3></div>
@@ -142,6 +167,26 @@ Views.config = (() => {
             });
             Store.setPerfil({ cache: d });
             UI.toast('Tabela salva');
+        });
+
+        const baixarApp = raiz.querySelector('#cfBaixarApp');
+        if (baixarApp) baixarApp.addEventListener('click', async () => {
+            baixarApp.disabled = true;
+            baixarApp.textContent = 'Baixando...';
+            try {
+                const r = await fetch('Painel-da-Creator.html', { cache: 'no-store' });
+                if (!r.ok) throw new Error(r.status);
+                const html = await r.text();
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+                a.download = 'Painel da Creator.html';
+                a.click();
+                setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+                UI.toast('Pronto! Salve na área de trabalho e dê dois cliques pra abrir');
+            } catch (e) {
+                UI.toast('Não consegui baixar agora, tenta de novo', 'erro');
+            }
+            desenhar();
         });
 
         raiz.querySelector('#cfExportar').addEventListener('click', () => {

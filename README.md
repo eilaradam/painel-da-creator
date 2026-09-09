@@ -38,7 +38,39 @@ js/app.js           navegação entre abas
 js/views/*.js       uma aba cada
 ```
 
-## Rodar local
+## As duas formas de usar
+
+**1. Online:** https://eilaradam.github.io/painel-da-creator/
+
+**2. Instalado no computador:** o arquivo `Painel-da-Creator.html` é o painel inteiro num arquivo só (CSS e JS embutidos, cerca de 300 KB). A pessoa salva onde quiser, dá dois cliques e ele abre no navegador, funcionando igual e sem internet. Só os vídeos das referências precisam de conexão.
+
+Na aba Configurações, quem estiver na versão online vê um botão **"Baixar o meu painel"** que entrega esse arquivo pronto.
+
+> Cada cópia guarda os próprios dados: o que está salvo na versão online não aparece na copiada, e vice-versa. Pra levar os dados de uma pra outra, use Baixar backup e Restaurar de um backup.
+
+## Gerar o arquivo único
+
+Depois de qualquer mudança no código:
+
+```
+node build.js
+```
+
+Ele junta `index.html` + `css/app.css` + todos os `js/` e escreve `Painel-da-Creator.html`. O script recusa gerar se sobrar qualquer referência a arquivo local, então o resultado sempre roda sozinho.
+
+## Vídeos nas referências
+
+Cada referência aceita três formas de vídeo, e o painel escolhe a que existir:
+
+| Campo | O que colocar | Como aparece |
+|---|---|---|
+| `youtube` ou `link` | link do YouTube em qualquer formato | player do YouTube dentro da ficha, e a capa do card vem automática |
+| `instagram` ou `link` | link do reel ou post público | o post embutido dentro da ficha |
+| `video` | caminho de um arquivo, ex: `videos/entrevista.mp4` | player nativo, funciona offline |
+
+Sem nenhum dos três, o card mostra uma capa com emoji e o gradiente da cor da categoria.
+
+## Rodar local durante o desenvolvimento
 
 ```
 python3 -m http.server 5199

@@ -191,12 +191,13 @@ Views.checklist = (() => {
 
     function cartaoRef(r) {
         const cor = r.cor || CORES[Math.abs(hash(r.id || r.titulo)) % CORES.length];
-        const temMidia = r.video || r.capa;
+        const capa = capaDoCard(r);
+        const temMidia = r.video || capa;
         return `
             <button class="ref-card c-${cor}" data-ref="${UI.esc(r.id)}" type="button">
                 <div class="ref-capa ${temMidia ? '' : 'capa-cat'}">
                     ${r.video ? `<video src="${UI.esc(r.video)}" muted playsinline preload="metadata"></video>`
-                        : r.capa ? `<img src="${UI.esc(r.capa)}" alt="" loading="lazy">`
+                        : capa ? `<img src="${UI.esc(capa)}" alt="" loading="lazy">`
                         : `<span class="ref-emoji">${r.emoji || '🎬'}</span>`}
                     <span class="ref-badge">${UI.esc(r.estilo || 'Referência')}</span>
                     ${r.duracao ? `<span class="ref-dur">${UI.esc(r.duracao)}</span>` : ''}
@@ -220,6 +221,56 @@ Views.checklist = (() => {
         String(s).split('').forEach(c => { h = ((h << 5) - h) + c.charCodeAt(0); h |= 0; });
         return h;
     }
+
+    /* ---------- vídeo: arquivo, YouTube ou Instagram ---------- */
+
+    /** pega o id do YouTube em qualquer formato de link */
+    function idYoutube(url) {
+        const s = String(url || '');
+        const m = s.match(/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/|\/live\/)([A-Za-z0-9_-]{11})/);
+        if (m) return m[1];
+        return /^[A-Za-z0-9_-]{11}$/.test(s.trim()) ? s.trim() : '';
+    }
+
+    /** pega o código do post ou reel do Instagram */
+    function codigoInsta(url) {
+        const m = String(url || '').match(/instagram\.com\/(?:p|reel|reels|tv)\/([A-Za-z0-9_-]+)/);
+        return m ? m[1] : '';
+    }
+
+    /** o que aparece na capa do card: capa própria, print do YouTube ou nada */
+    function capaDoCard(r) {
+        if (r.capa) return r.capa;
+        const yt = idYoutube(r.youtube || r.link);
+        return yt ? `https://img.youtube.com/vi/${yt}/hqdefault.jpg` : '';
+    }
+
+    /** o player que vai dentro da ficha */
+    function playerDaFicha(r) {
+        if (r.video) {
+            return `<video src="${UI.esc(r.video)}" controls playsinline style="width:100%;border-radius:14px;background:#000;max-height:62vh"></video>`;
+        }
+        const yt = idYoutube(r.youtube || r.link);
+        if (yt) {
+            return `<div style="position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;background:#000">
+                <iframe src="https://www.youtube-nocookie.com/embed/${yt}" title="${UI.esc(r.titulo)}"
+                    style="position:absolute;inset:0;width:100%;height:100%;border:0"
+                    allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>
+            </div>`;
+        }
+        const ig = codigoInsta(r.instagram || r.link);
+        if (ig) {
+            return `<div style="display:flex;justify-content:center">
+                <iframe src="https://www.instagram.com/p/${ig}/embed/captioned/" title="${UI.esc(r.titulo)}"
+                    style="width:100%;max-width:400px;height:640px;border:1px solid var(--border);border-radius:14px;background:var(--surface)"
+                    scrolling="no" allowtransparency loading="lazy"></iframe>
+            </div>`;
+        }
+        return '';
+    }
+
+    /** link pra abrir o original em outra aba */
+    const linkExterno = r => r.link || r.instagram || r.youtube || '';
 
     function dropdown(nome, rotulo, valor, opcoes) {
         const atual = opcoes.find(o => o.v === valor) || opcoes[0];
@@ -245,7 +296,8 @@ Views.checklist = (() => {
         const r = todasReferencias().find(x => String(x.id) === String(id));
         if (!r) return;
         const cor = r.cor || CORES[Math.abs(hash(r.id || r.titulo)) % CORES.length];
-        const temMidia = r.video || r.capa;
+        const player = playerDaFicha(r);
+        const externo = linkExterno(r);
 
         const roteiroHtml = Array.isArray(r.roteiro)
             ? r.roteiro.map(b => `<div class="beat"><div class="beat-when">${UI.esc(b.t)}</div><div class="beat-what">${b.o}</div></div>`).join('')
@@ -257,13 +309,12 @@ Views.checklist = (() => {
             largo: true,
             corpo: `
                 <div class="c-${cor}">
-                    <div class="ficha-capa ${temMidia ? '' : 'capa-cat'}">
-                        ${r.video ? `<video src="${UI.esc(r.video)}" controls playsinline></video>`
-                            : r.capa ? `<img src="${UI.esc(r.capa)}" alt="">`
-                            : `<span class="ref-emoji">${r.emoji || '🎬'}</span>`}
-                    </div>
+                    ${player ? `<div style="margin-bottom:18px">${player}</div>` : `
+                        <div class="ficha-capa capa-cat">
+                            ${r.capa ? `<img src="${UI.esc(r.capa)}" alt="">` : `<span class="ref-emoji">${r.emoji || '🎬'}</span>`}
+                        </div>`}
 
-                    ${r.link ? `<a class="btn btn-primary" href="${UI.esc(r.link)}" target="_blank" rel="noopener" style="margin-bottom:18px">${UI.icon('link', 15)} Assistir o vídeo original</a>` : ''}
+                    ${externo ? `<a class="btn ${player ? '' : 'btn-primary'}" href="${UI.esc(externo)}" target="_blank" rel="noopener" style="margin-bottom:18px">${UI.icon('link', 15)} Abrir o vídeo original</a>` : ''}
 
                     ${r.gancho ? `
                         <div class="note accent" style="margin-bottom:18px">
@@ -348,8 +399,10 @@ Views.checklist = (() => {
                     ${UI.campo('Audiência', UI.select('audiencia', Biblioteca.AUDIENCIAS.map(a => ({ v: a.v, t: a.t })), 'Universal'))}
                     ${UI.campo('Duração', UI.input('duracao', '', 'placeholder="30 a 45s"'))}
                 </div>
-                ${UI.campo('Link do vídeo', UI.input('link', '', 'placeholder="https://instagram.com/reel/..."'),
-                    'Cole o link do reel, do TikTok ou do YouTube. O botão de assistir aparece na ficha.')}
+                ${UI.campo('Link do vídeo', UI.input('link', '', 'placeholder="https://www.instagram.com/reel/... ou https://youtu.be/..."'),
+                    'Cole o link do reel do Instagram ou do YouTube. O vídeo aparece pra assistir aqui dentro.')}
+                ${UI.campo('Capa (opcional)', UI.input('capa', '', 'placeholder="https://... link de uma imagem"'),
+                    'Se for do YouTube, a capa vem sozinha. Se for do Instagram, você pode colar o link de uma imagem.')}
                 ${UI.campo('O gancho', UI.input('gancho', '', 'placeholder="A frase ou a imagem dos 3 primeiros segundos"'))}
                 ${UI.campo('Por que esse vídeo funcionou', UI.textarea('porque', '', 'placeholder="O que prendeu você? O que fez querer assistir até o fim?"'),
                     'Essa parte é a mais importante. Referência sem análise vira só um vídeo salvo.')}
