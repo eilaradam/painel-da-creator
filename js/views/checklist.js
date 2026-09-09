@@ -192,13 +192,15 @@ Views.checklist = (() => {
     function cartaoRef(r) {
         const cor = r.cor || CORES[Math.abs(hash(r.id || r.titulo)) % CORES.length];
         const capa = capaDoCard(r);
-        const temMidia = r.video || capa;
+        const reserva = capaReserva(r);
+        // o emoji fica sempre por baixo: se a capa não carregar, ele reaparece sozinho
         return `
             <button class="ref-card c-${cor}" data-ref="${UI.esc(r.id)}" type="button">
-                <div class="ref-capa ${temMidia ? '' : 'capa-cat'}">
-                    ${r.video ? `<video src="${UI.esc(r.video)}" muted playsinline preload="metadata"></video>`
-                        : capa ? `<img src="${UI.esc(capa)}" alt="" loading="lazy">`
-                        : `<span class="ref-emoji">${r.emoji || '🎬'}</span>`}
+                <div class="ref-capa capa-cat">
+                    <span class="ref-emoji">${r.emoji || '🎬'}</span>
+                    ${r.video ? `<video class="ref-midia" src="${UI.esc(r.video)}" muted playsinline preload="metadata"></video>`
+                        : capa ? `<img class="ref-midia" src="${UI.esc(capa)}" alt="" loading="lazy" data-reserva="${UI.esc(reserva)}" onload="Views.checklist.conferirCapa(this)" onerror="Views.checklist.trocarCapa(this)">`
+                        : ''}
                     <span class="ref-badge">${UI.esc(r.estilo || 'Referência')}</span>
                     ${r.duracao ? `<span class="ref-dur">${UI.esc(r.duracao)}</span>` : ''}
                     <span class="ref-play">
@@ -239,11 +241,25 @@ Views.checklist = (() => {
         return m ? m[1] : '';
     }
 
-    /** o que aparece na capa do card: capa própria, print do YouTube ou nada */
+    /** o que aparece na capa do card: capa própria, print do YouTube ou nada.
+        oardefault é a versão na proporção original do vídeo, então Short vem
+        em pé e sem as tarjas pretas que o hqdefault coloca dos lados. */
     function capaDoCard(r) {
         if (r.capa) return r.capa;
         const yt = idYoutube(r.youtube || r.link);
-        return yt ? `https://img.youtube.com/vi/${yt}/hqdefault.jpg` : '';
+        return yt ? `https://i.ytimg.com/vi/${yt}/oardefault.jpg` : '';
+    }
+
+    /** nem todo vídeo tem oardefault: a fila tenta oar2 e por último a capa
+        comum, que é 4:3 e tem tarja preta, mas pelo menos nunca falha */
+    function capaReserva(r) {
+        if (r.capa) return '';
+        const yt = idYoutube(r.youtube || r.link);
+        if (!yt) return '';
+        return [
+            `https://i.ytimg.com/vi/${yt}/oar2.jpg`,
+            `https://i.ytimg.com/vi/${yt}/hqdefault.jpg`
+        ].join('|');
     }
 
     /** o player que vai dentro da ficha */
@@ -641,6 +657,7 @@ Views.checklist = (() => {
         raiz.querySelectorAll('[data-ref]').forEach(c => {
             c.addEventListener('click', () => abrirRef(c.dataset.ref));
         });
+
         const nova = raiz.querySelector('#refNova');
         if (nova) nova.addEventListener('click', novaReferencia);
 
@@ -726,9 +743,27 @@ Views.checklist = (() => {
 
     const limpar = html => String(html).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 
+    /** Quando o vídeo não tem aquela versão da capa, o YouTube não devolve erro:
+        devolve um cinza de 120x90. Então não basta ouvir o onerror, tem que
+        conferir o tamanho do que chegou. */
+    function conferirCapa(img) {
+        if (img.naturalWidth && img.naturalWidth <= 120) trocarCapa(img);
+    }
+
+    /** capa não serviu: tenta a próxima da fila, e no fim some pra sobrar o emoji */
+    function trocarCapa(img) {
+        const fila = (img.dataset.reserva || '').split('|').filter(Boolean);
+        const proxima = fila.shift();
+        img.dataset.reserva = fila.join('|');
+        if (proxima) img.src = proxima;
+        else img.remove();
+    }
+
     return {
         titulo: 'Checklist Portfólio',
         dica: 'O que precisa ter, referências e roteiros',
-        render
+        render,
+        trocarCapa,
+        conferirCapa
     };
 })();

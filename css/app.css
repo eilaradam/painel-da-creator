@@ -1407,3 +1407,9 @@ td.acts { text-align: right; white-space: nowrap; }
     .ficha-2col { grid-template-columns: minmax(0, 1fr); gap: 18px; }
     .ficha-2col .ficha-video { position: static; }
 }
+
+/* capa por cima do emoji: se a imagem falhar ela é removida e o emoji reaparece */
+.ref-capa .ref-midia { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
+
+/* selos ficam acima da capa */
+.ref-badge, .ref-play, .ref-dur { z-index: 3; }
