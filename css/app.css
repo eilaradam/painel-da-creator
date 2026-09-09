@@ -1399,3 +1399,11 @@ td.acts { text-align: right; white-space: nowrap; }
     .cl-tit p { display: none; }
     .cl-body { padding: 0 15px 16px; }
 }
+
+/* ficha da referência com vídeo: player de um lado, roteiro do outro */
+.ficha-2col { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 24px; align-items: start; }
+.ficha-2col .ficha-video { position: sticky; top: 0; }
+@media (max-width: 760px) {
+    .ficha-2col { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .ficha-2col .ficha-video { position: static; }
+}

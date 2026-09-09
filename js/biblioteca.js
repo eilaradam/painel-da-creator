@@ -108,128 +108,157 @@ const Biblioteca = (() => {
        ====================================================================== */
     const REFERENCIAS = [
         {
+            id: 'react-prova',
+            titulo: 'React com prova real',
+            emoji: '😱',
+            estilo: 'React',
+            audiencia: 'B2C',
+            cor: 'coral',
+            duracao: '55s',
+            youtube: 'https://youtube.com/shorts/08Bl9O930Kg',
+            marca: 'Creamy',
+            gancho: '"Ok, Jade Picon, a gente já entendeu que sua pele é perfeita, mas... peraí, o que é isso que ela tá passando?"',
+            porque: 'Pega carona em alguém que a audiência já para pra ver, e transforma a curiosidade em teste. Quando a Lara diz "com os meus poros que dá pra ver do espaço", ela sai do lugar de quem vende e vai pro lugar de quem tem o mesmo problema de quem assiste.',
+            diferencial: 'Junta dois formatos que quase ninguém junta: o react, que é entretenimento e segura, e a demonstração, que é o que vende. E fecha com prova de fora ("nos testes da marca, 100% das pessoas falaram que a textura melhorou"), não só com a opinião dela.',
+            erro: 'Reagir e não testar. O react sozinho entretém e não vende. A prova é o que transforma em trabalho de marca.',
+            roteiro: [
+                { t: '0 a 5s', o: '<b>Entre no meio da cena de outra pessoa.</b> Uma celebridade ou um vídeo que está rodando. <em>"A gente já entendeu que sua pele é perfeita, mas..."</em>' },
+                { t: '5 a 12s', o: '<b>A pergunta que abre o loop.</b> "O que é isso que ela está passando?" Aqui a audiência quer a resposta e não sai mais.' },
+                { t: '12 a 20s', o: '<b>Se coloque no mesmo problema de quem assiste.</b> Exponha o seu defeito antes de falar do produto.' },
+                { t: '20 a 35s', o: '<b>Diga o que o produto NÃO é antes de dizer o que ele é.</b> <em>"Isso não é tônico, não é água de limpar o rosto. É tratamento."</em> Isso educa e justifica o preço.' },
+                { t: '35 a 45s', o: '<b>Resultado com honestidade.</b> <em>"Não é milagre de uma hora não, mas é rápido de verdade."</em> A ressalva é o que faz acreditarem no resto.' },
+                { t: '45 a 55s', o: '<b>Prova de fora + chamada.</b> Número do teste da marca e uma frase seca no fim.' }
+            ]
+        },
+        {
+            id: 'conversa-encenada',
+            titulo: 'Conversa encenada',
+            emoji: '💬',
+            estilo: 'Encenação',
+            audiencia: 'B2C',
+            cor: 'rosa',
+            duracao: '38s',
+            youtube: 'https://youtube.com/shorts/XczFsjLCIUU',
+            marca: 'Lemon Bank',
+            gancho: 'A cena já rolando, sem apresentação: "São R$ 18. Crédito ou débito?"',
+            porque: 'Toda a informação do produto chega dentro de um diálogo. Ninguém sente que está assistindo propaganda, sente que está escutando uma conversa. As perguntas que a audiência tem são feitas pela outra pessoa na cena.',
+            diferencial: 'Exige segunda pessoa e locação, que é justamente o que a maioria das creators não faz. Portfólio com esse formato mostra pra marca que você produz cena, não só fala pra câmera. É o tipo de vídeo que muda a faixa de preço da sua proposta.',
+            erro: 'Diálogo decorado. Se as duas pessoas falarem certinho demais, quebra. Deixe a fala se atropelar um pouco.',
+            roteiro: [
+                { t: '0 a 4s', o: '<b>A cena no meio de uma ação comum.</b> Um pagamento, um pedido, uma entrega. Nada de "oi gente".' },
+                { t: '4 a 10s', o: '<b>O produto entra por acaso.</b> Alguém repara nele. <em>"Que cartão bonito, né?"</em>' },
+                { t: '10 a 25s', o: '<b>A outra pessoa pergunta o que a audiência quer saber.</b> Cada dúvida vira uma fala, não um texto na tela.' },
+                { t: '25 a 33s', o: '<b>O benefício principal dito de forma simples,</b> com a reação de surpresa de quem ouviu. A reação vale mais que a informação.' },
+                { t: 'final', o: '<b>Feche dentro da cena, com humor.</b> <em>"Vou até trazer uma limonada por conta da casa."</em> Nunca saia da cena pra virar vendedor.' }
+            ]
+        },
+        {
+            id: 'demonstracao-externa',
+            titulo: 'Demonstração externa',
+            emoji: '🧁',
+            estilo: 'Demonstração',
+            audiencia: 'B2C',
+            cor: 'mostarda',
+            duracao: '32s',
+            youtube: 'https://youtube.com/shorts/5wf8Fv2CTa4',
+            marca: 'InfinitePay',
+            gancho: '"Me chamaram de maluca só porque eu tava vendendo brigadeiro, até descobrirem quanto tava caindo na minha conta."',
+            porque: 'Abre com julgamento social e dinheiro, duas coisas que ninguém consegue ignorar. E o produto aparece resolvendo uma situação real, na rua, não em cima de uma mesa branca.',
+            diferencial: 'Gravado fora, com uma venda acontecendo de verdade. A marca vê esse vídeo e entende que você sabe gravar sem estúdio, sem controle de luz e com barulho em volta. Isso vale caro.',
+            erro: 'Mostrar o aplicativo parado na tela. O produto tem que estar sendo usado no meio da ação, com a mão e o cliente em quadro.',
+            roteiro: [
+                { t: '0 a 6s', o: '<b>Gancho de julgamento + curiosidade de dinheiro.</b> "Me chamaram de maluca... até descobrirem quanto tava caindo na minha conta."' },
+                { t: '6 a 12s', o: '<b>Revele o segredo.</b> O produto entra como resposta a uma pergunta que você mesma plantou.' },
+                { t: '12 a 22s', o: '<b>Passo a passo curto, na tela, enquanto a venda acontece.</b> No máximo 3 toques.' },
+                { t: '22 a 28s', o: '<b>Número concreto que quebra objeção.</b> Taxa, parcelamento, custo. Sem número o vídeo vira conversa fiada.' },
+                { t: 'final', o: '<b>Uma chamada só, com um verbo só.</b>' }
+            ]
+        },
+        {
+            id: 'dor-em-cortes',
+            titulo: 'Sequência de dor em cortes',
+            emoji: '😩',
+            estilo: 'Problema e solução',
+            audiencia: 'Universal',
+            cor: 'terra',
+            duracao: '30s',
+            youtube: 'https://youtube.com/shorts/i9dHLO0VlFk',
+            marca: 'Velds',
+            gancho: '"Meu Deus, será que eu deixei a luz de casa acesa de novo? E a chave, onde que eu coloquei?"',
+            porque: 'São duas ou três aflições em cortes rápidos logo de cara, sem produto nenhum. A pessoa se reconhece em pelo menos uma nos primeiros segundos, e quem se reconhece não rola.',
+            diferencial: 'Cada dor mostrada no começo é resolvida na tela depois, na mesma ordem. Esse fechamento de ciclo é o que faz o vídeo parecer completo em 30 segundos.',
+            erro: 'Dor genérica. "A correria do dia a dia" não é dor, é frase de calendário. Dor é a chave que você não sabe onde colocou.',
+            roteiro: [
+                { t: '0 a 8s', o: '<b>Duas ou três aflições em cortes secos.</b> Sem produto, sem marca, só o desespero. Fale em voz de pensamento.' },
+                { t: '8 a 12s', o: '<b>A virada em uma frase.</b> <em>"Graças a X eu não tenho mais esse problema."</em>' },
+                { t: '12 a 25s', o: '<b>Resolva cada dor na ordem em que você mostrou.</b> Uma solução por corte, com a mão em quadro.' },
+                { t: '25 a 30s', o: '<b>Amplie:</b> liste rápido o que mais existe na linha, pra abrir o desejo além do que foi mostrado.' },
+                { t: 'final', o: '<b>Frase de valor pessoal.</b> <em>"Salvou minha rotina e vale cada centavo."</em>' }
+            ]
+        },
+        {
+            id: 'entrevista-mercado',
+            titulo: 'Entrevista no mercado',
+            emoji: '🛒',
+            estilo: 'Entrevista',
+            audiencia: 'B2C',
+            cor: 'oliva',
+            duracao: '35s',
+            youtube: 'https://youtube.com/shorts/wesTfq67X9o',
+            marca: 'Méliuz',
+            gancho: '"Caraca, o café tá caro desse jeito? Você tá levando tudo isso?"',
+            porque: 'Preço de supermercado é assunto que qualquer pessoa tem opinião, então o gancho pega geral. E a explicação do produto não vem de você vendendo, vem da outra pessoa contando. Informação na boca de terceiro tem outro peso.',
+            diferencial: 'Locação real, pessoa real e o produto explicado por quem usa. É o formato mais difícil de gravar dessa lista e por isso o que menos aparece no portfólio das outras.',
+            erro: 'Parecer roteirizado. Deixe o estranhamento genuíno acontecer ("promoção? aqui não tem promoção de café"), porque é ele que segura.',
+            roteiro: [
+                { t: '0 a 5s', o: '<b>Aborde no corredor com uma observação, não com uma pergunta de vendedor.</b> "O café tá caro desse jeito?"' },
+                { t: '5 a 12s', o: '<b>Crie o estranhamento.</b> A outra pessoa fala de uma promoção que não existe na prateleira. Isso abre a curiosidade.' },
+                { t: '12 a 25s', o: '<b>Deixe a pessoa explicar.</b> Você só faz as perguntas que a audiência faria: "explica pra gente".' },
+                { t: '25 a 32s', o: '<b>Exemplo com número, apontando o produto que está na mão.</b> "Esse café aqui está com 30% de cashback."' },
+                { t: 'final', o: '<b>Reação e saída natural.</b> "Vou aproveitar pra levar o meu também." Sem chamada forçada.' }
+            ]
+        },
+        {
+            id: 'rotina-marca',
+            titulo: 'Rotina com a marca',
+            emoji: '☀️',
+            estilo: 'Rotina',
+            audiencia: 'B2C',
+            cor: 'areia',
+            duracao: '40s',
+            youtube: 'https://youtube.com/shorts/0FhBNV71z9A',
+            marca: 'Ateliê',
+            gancho: 'Um contexto de tempo logo na primeira frase, com você já no meio da rotina.',
+            porque: 'Coloca o produto dentro de uma vida que a pessoa quer ter. Não tem argumento de venda, tem desejo. É o formato que a marca pede quando quer construir imagem em vez de vender no impulso.',
+            diferencial: 'O produto não é o assunto, ele é parte do cenário. Isso exige confiança da sua parte e é justamente o que faz parecer conteúdo em vez de anúncio.',
+            erro: 'Rotina irreal. Cozinha impecável às 6h da manhã ninguém acredita. Deixe a bagunça aparecer um pouco.',
+            roteiro: [
+                { t: '0 a 4s', o: '<b>Contexto de tempo.</b> Uma hora, um compromisso, um limite. Isso ancora a cena na realidade.' },
+                { t: '4 a 15s', o: '<b>Os primeiros passos da rotina sem o produto ainda.</b> É o que cria a naturalidade.' },
+                { t: '15 a 32s', o: '<b>O produto entra como parte da rotina,</b> não como o assunto principal. Mostre o uso, não a embalagem.' },
+                { t: '32 a 40s', o: '<b>Feche a rotina.</b> Você pronta, saindo, vivendo. O produto já ficou pra trás.' },
+                { t: 'final', o: '<b>Uma frase discreta sobre o que mudou.</b> Quanto menos vendedora, mais funciona.' }
+            ]
+        },
+        {
             id: 'entrevista-rua',
             titulo: 'Entrevista de rua',
             emoji: '🎤',
             estilo: 'Entrevista',
             audiencia: 'Universal',
-            cor: 'terra',
+            cor: 'petroleo',
             duracao: '30 a 60s',
             gancho: '"Quanto você acha que custa esse aqui?"',
-            porque: 'Funciona porque tem gente real reagindo, e reação de gente real é a coisa mais difícil de fingir. O algoritmo entrega porque prende: a pessoa quer saber a resposta.',
-            diferencial: 'Enquanto 90% do UGC é uma pessoa sozinha falando pra câmera na sala de casa, aqui tem rua, tem barulho, tem desconhecido. Isso sozinho já te tira do padrão.',
-            erro: 'Perguntar coisa fechada de sim ou não. A pergunta precisa render opinião.',
+            porque: 'Funciona porque tem gente real reagindo, e reação de gente real é a coisa mais difícil de fingir. A audiência quer saber a resposta, então fica até o fim.',
+            diferencial: 'Enquanto a maioria do UGC é uma pessoa sozinha falando na sala de casa, aqui tem rua, barulho e desconhecido. Isso sozinho já te tira do padrão.',
+            erro: 'Pergunta fechada de sim ou não. A pergunta precisa render opinião.',
             roteiro: [
-                { t: '0 a 3s', o: 'Já comece com a pergunta sendo feita pra alguém. Sem apresentação, sem "oi gente".' },
-                { t: '3 a 15s', o: 'Duas ou três respostas curtas de pessoas diferentes. Corte seco entre elas.' },
+                { t: '0 a 3s', o: 'Já comece com a pergunta sendo feita pra alguém. Sem apresentação.' },
+                { t: '3 a 15s', o: 'Duas ou três respostas curtas de pessoas diferentes, com corte seco entre elas.' },
                 { t: '15 a 30s', o: 'A resposta mais engraçada ou mais absurda. É essa que faz compartilhar.' },
                 { t: '30 a 45s', o: 'Você revela a resposta certa e mostra o produto de perto.' },
-                { t: 'final', o: 'Devolva a pergunta pra quem está assistindo. "E você, quanto acharia?"' }
-            ],
-            video: '', link: ''
-        },
-        {
-            id: 'teste-produto',
-            titulo: 'Testando o produto de verdade',
-            emoji: '🧪',
-            estilo: 'Teste',
-            audiencia: 'B2C',
-            cor: 'oliva',
-            duracao: '30 a 45s',
-            gancho: '"Vou testar do jeito mais difícil possível."',
-            porque: 'Teste real quebra a desconfiança. A pessoa está cansada de review elogioso. Quando você testa no limite, ela acredita no resultado.',
-            diferencial: 'Você não fala que funciona, você prova na câmera. E aceita mostrar se não funcionar. Isso é o que a marca boa quer.',
-            erro: 'Testar de um jeito fácil demais, que já se sabe que vai dar certo. Perde a graça e a credibilidade.',
-            roteiro: [
-                { t: '0 a 3s', o: 'Mostre o desafio, não o produto. "Isso aqui promete tirar mancha de caneta. Vamos ver."' },
-                { t: '3 a 10s', o: 'Crie o problema na frente da câmera. Sujar, bagunçar, amassar. Sem corte.' },
-                { t: '10 a 25s', o: 'O teste acontecendo, em plano fechado, com o som real.' },
-                { t: '25 a 35s', o: 'O resultado no mesmo enquadramento do começo. Aqui a prova social entra: "por isso que tem 4 mil avaliações".' },
-                { t: 'final', o: 'Um ponto honesto de ressalva. É o que faz a pessoa confiar em você da próxima vez.' }
-            ],
-            video: '', link: ''
-        },
-        {
-            id: 'vlog-feira',
-            titulo: 'Vlog na feira ou no mercado',
-            emoji: '🛒',
-            estilo: 'Vlog',
-            audiencia: 'B2C',
-            cor: 'mostarda',
-            duracao: '40 a 70s',
-            gancho: '"Vem comigo fazer a feira da semana com R$ 100."',
-            porque: 'Vlog externo tem vida. Tem gente passando, tem barulho, tem cor. O olho não cansa como cansa numa sala parada.',
-            diferencial: 'Portfólio com vídeo externo mostra pra marca que você sabe gravar fora de casa, com barulho e sem controle de luz. Isso vale mais caro.',
-            erro: 'Gravar tudo no mesmo plano andando. Precisa de detalhe, de close, de mão pegando o produto.',
-            roteiro: [
-                { t: '0 a 4s', o: 'Um limite ou uma missão. Valor, tempo ou quantidade. Isso cria o loop.' },
-                { t: '4 a 20s', o: 'O caminho, com cortes rápidos e detalhes bonitos. Cores, texturas, mãos.' },
-                { t: '20 a 45s', o: 'O produto entra naturalmente no meio da compra, não como propaganda.' },
-                { t: '45 a 60s', o: 'O resultado em cima da mesa em casa. Fecha o ciclo que você abriu.' },
-                { t: 'final', o: 'Diga se deu ou não deu certo. Cumprir a promessa do gancho é o que fideliza.' }
-            ],
-            video: '', link: ''
-        },
-        {
-            id: 'venda-rua',
-            titulo: 'Vendendo o produto na rua',
-            emoji: '🗣️',
-            estilo: 'Venda direta',
-            audiencia: 'B2C',
-            cor: 'coral',
-            duracao: '25 a 45s',
-            gancho: '"Vou tentar vender isso aqui pra 3 pessoas na rua."',
-            porque: 'Tem tensão. A pessoa quer saber se vai dar certo ou se vai passar vergonha. Tensão segura até o fim.',
-            diferencial: 'É o formato que mais mostra que você sabe argumentar e vender, que é exatamente o que a marca está comprando de você.',
-            erro: 'Editar tirando as recusas. As recusas são a melhor parte, é o que torna real.',
-            roteiro: [
-                { t: '0 a 3s', o: 'Anuncie o desafio olhando pra câmera, andando. Energia alta.' },
-                { t: '3 a 12s', o: 'Primeira abordagem. Deixe a recusa aparecer se acontecer.' },
-                { t: '12 a 25s', o: 'Segunda abordagem, agora com um argumento melhor. Mostra evolução.' },
-                { t: '25 a 40s', o: 'A pessoa que se interessa. Mostre o rosto, a reação, a pergunta que ela faz.' },
-                { t: 'final', o: 'O argumento que funcionou, dito direto pra câmera. É esse o presente que você dá pra quem assistiu.' }
-            ],
-            video: '', link: ''
-        },
-        {
-            id: 'pov-dramatizacao',
-            titulo: 'POV e dramatização',
-            emoji: '🎭',
-            estilo: 'Dramatização',
-            audiencia: 'B2C',
-            cor: 'rosa',
-            duracao: '15 a 30s',
-            gancho: '"POV: você tem visita chegando em 20 minutos."',
-            porque: 'A pessoa se vê na cena. Não é você falando do problema, é o problema acontecendo com alguém.',
-            diferencial: 'Mostra pra marca que você sabe atuar e criar situação, e não só apresentar produto. Abre porta pra roteiro pago.',
-            erro: 'Atuar demais e forçar. O tom precisa ser de vida real, não de teatro.',
-            roteiro: [
-                { t: '0 a 2s', o: 'A situação já acontecendo, com texto na tela dizendo o contexto.' },
-                { t: '2 a 8s', o: 'O desespero, o corre, o problema no auge. É aqui que a pessoa ri e se identifica.' },
-                { t: '8 a 20s', o: 'A solução entra na cena, sem virar propaganda. Continue atuando.' },
-                { t: 'final', o: 'A cena resolvida, com um detalhe engraçado. Nunca termine com discurso de vendedor.' }
-            ],
-            video: '', link: ''
-        },
-        {
-            id: 'bastidor-processo',
-            titulo: 'Bastidor do seu processo',
-            emoji: '🎥',
-            estilo: 'Bastidor',
-            audiencia: 'B2B',
-            cor: 'petroleo',
-            duracao: '30 a 50s',
-            gancho: '"Como eu gravo um vídeo de marca sozinha em casa."',
-            porque: 'Quem contrata creator quer ver como você trabalha. Esse vídeo responde a pergunta que a marca não faz em voz alta: "será que ela é profissional?".',
-            diferencial: 'É o único formato dessa lista que fala direto com quem contrata, não com o consumidor final. Coloque um no portfólio e observe as propostas mudarem de tamanho.',
-            erro: 'Mostrar só o resultado bonito. O valor está em mostrar o trabalho: o tripé torto, a terceira tomada, o ajuste de luz.',
-            roteiro: [
-                { t: '0 a 4s', o: 'O resultado final primeiro, por 2 segundos. Depois volte pro começo.' },
-                { t: '4 a 20s', o: 'O setup real, com o que você tem. Mostre o improviso, isso gera confiança.' },
-                { t: '20 a 40s', o: 'Uma decisão técnica sua explicada em uma frase. "Gravo sempre nessa hora por causa da luz."' },
-                { t: 'final', o: 'O resultado de novo, agora com a pessoa entendendo o que teve por trás.' }
-            ],
-            video: '', link: ''
+                { t: 'final', o: 'Devolva a pergunta pra quem está assistindo.' }
+            ]
         },
         {
             id: 'comparativo-lado',
@@ -241,16 +270,34 @@ const Biblioteca = (() => {
             duracao: '25 a 40s',
             gancho: '"R$ 39 contra R$ 260. Dá pra ver diferença?"',
             porque: 'É o formato mais salvo que existe. Salvamento é o número que mais impressiona marca, porque mostra intenção de compra.',
-            diferencial: 'Mostra que você consegue segurar a atenção num vídeo mais analítico, sem depender de humor. Isso vale muito pra marca de produto técnico.',
+            diferencial: 'Mostra que você consegue segurar a atenção num vídeo analítico, sem depender de humor. Vale muito pra marca de produto técnico.',
             erro: 'Detonar um dos dois. O comparativo honesto sempre acha um cenário pra cada um.',
             roteiro: [
                 { t: '0 a 4s', o: 'A pergunta com os dois preços na tela. O contraste é o gancho.' },
                 { t: '4 a 12s', o: 'Os dois lado a lado, mesma luz, mesmo enquadramento, identificados na tela.' },
-                { t: '12 a 28s', o: 'Um critério por vez. Textura, cheiro, duração, rendimento. Um corte por critério.' },
-                { t: '28 a 36s', o: 'O veredito com nuance. "Pra todo dia, o barato resolve. Pra evento, o caro entrega mais."' },
-                { t: 'final', o: '"Qual você usa?" Comentário puxa comentário, e comentário é o que faz marca te achar.' }
-            ],
-            video: '', link: ''
+                { t: '12 a 28s', o: 'Um critério por vez, um corte por critério.' },
+                { t: '28 a 36s', o: 'O veredito com nuance, um cenário pra cada um.' },
+                { t: 'final', o: '"Qual você usa?" Comentário puxa comentário.' }
+            ]
+        },
+        {
+            id: 'bastidor-processo',
+            titulo: 'Bastidor do seu processo',
+            emoji: '🎥',
+            estilo: 'Bastidor',
+            audiencia: 'B2B',
+            cor: 'petroleo',
+            duracao: '30 a 50s',
+            gancho: '"Como eu gravo um vídeo de marca sozinha em casa."',
+            porque: 'Quem contrata creator quer ver como você trabalha. Esse vídeo responde a pergunta que a marca não faz em voz alta: "será que ela é profissional?".',
+            diferencial: 'É o único formato dessa lista que fala com quem contrata, não com o consumidor. Coloque um no portfólio e veja as propostas mudarem de tamanho.',
+            erro: 'Mostrar só o resultado bonito. O valor está em mostrar o trabalho: o tripé torto, a terceira tomada, o ajuste de luz.',
+            roteiro: [
+                { t: '0 a 4s', o: 'O resultado final primeiro, por 2 segundos. Depois volte pro começo.' },
+                { t: '4 a 20s', o: 'O setup real, com o que você tem. Mostre o improviso, isso gera confiança.' },
+                { t: '20 a 40s', o: 'Uma decisão técnica sua explicada em uma frase.' },
+                { t: 'final', o: 'O resultado de novo, agora com a pessoa entendendo o que teve por trás.' }
+            ]
         },
         {
             id: 'narracao-broll',
@@ -258,23 +305,22 @@ const Biblioteca = (() => {
             emoji: '🎧',
             estilo: 'Narração',
             audiencia: 'B2B',
-            cor: 'areia',
+            cor: 'rosa',
             duracao: '20 a 35s',
             gancho: 'A primeira frase da narração já em cima da imagem mais bonita que você tem.',
-            porque: 'Parece cinema e custa quase nada. A marca vê esse vídeo e acha que você é cara, e é justamente por isso que ela topa pagar mais.',
-            diferencial: 'É o formato que prova que você entrega mesmo sem aparecer. Isso abre um tipo de cliente que só quer o vídeo, não a sua imagem.',
-            erro: 'Áudio com eco. Nesse formato o áudio é 70% do vídeo, então grave em lugar fechado, com o celular perto da boca.',
+            porque: 'Parece cinema e custa quase nada. A marca vê e acha que você é cara, e é por isso que ela topa pagar mais.',
+            diferencial: 'Prova que você entrega mesmo sem aparecer, o que abre um tipo de cliente que só quer o vídeo, não a sua imagem.',
+            erro: 'Áudio com eco. Nesse formato o áudio é 70% do vídeo.',
             roteiro: [
                 { t: 'antes', o: 'Grave a narração primeiro. A imagem se encaixa depois, nunca o contrário.' },
                 { t: '0 a 4s', o: 'Imagem de abertura forte com a narração já rolando. Sem silêncio no começo.' },
-                { t: '4 a 25s', o: 'Uma imagem nova a cada 2 ou 3 segundos. Detalhe, textura, mão, movimento.' },
-                { t: 'final', o: 'Feche na imagem mais bonita e deixe a última frase respirar em cima dela.' }
-            ],
-            video: '', link: ''
+                { t: '4 a 25s', o: 'Uma imagem nova a cada 2 ou 3 segundos.' },
+                { t: 'final', o: 'Feche na imagem mais bonita e deixe a última frase respirar.' }
+            ]
         }
     ];
 
-    const ESTILOS = ['Entrevista', 'Teste', 'Vlog', 'Venda direta', 'Dramatização', 'Bastidor', 'Comparativo', 'Narração'];
+    const ESTILOS = ['React', 'Encenação', 'Demonstração', 'Problema e solução', 'Entrevista', 'Rotina', 'Comparativo', 'Bastidor', 'Narração'];
     const AUDIENCIAS = [
         { v: 'B2C', t: 'B2C · cliente final' },
         { v: 'B2B', t: 'B2B · quem contrata' },

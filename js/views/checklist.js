@@ -210,6 +210,7 @@ Views.checklist = (() => {
                     <p>${UI.esc(r.gancho || r.porque || '')}</p>
                     <div class="ref-tags">
                         <span class="pill pill-cat">${UI.esc(r.audiencia || 'Universal')}</span>
+                        ${r.marca ? `<span class="pill">${UI.esc(r.marca)}</span>` : ''}
                         ${r.minha ? '<span class="pill">minha</span>' : ''}
                     </div>
                 </div>
@@ -252,7 +253,11 @@ Views.checklist = (() => {
         }
         const yt = idYoutube(r.youtube || r.link);
         if (yt) {
-            return `<div style="position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;background:#000">
+            // Short é vertical: player estreito e em pé, senão sobra tarja preta dos dois lados
+            const curto = /\/shorts\//.test(String(r.youtube || r.link));
+            const proporcao = curto ? '177.8%' : '56.25%';
+            const largura = curto ? 'max-width:290px;margin:0 auto;' : '';
+            return `<div style="${largura}position:relative;padding-top:${proporcao};border-radius:14px;overflow:hidden;background:#000">
                 <iframe src="https://www.youtube-nocookie.com/embed/${yt}" title="${UI.esc(r.titulo)}"
                     style="position:absolute;inset:0;width:100%;height:100%;border:0"
                     allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>
@@ -305,30 +310,33 @@ Views.checklist = (() => {
 
         UI.modal({
             titulo: (r.emoji || '🎬') + '  ' + r.titulo,
-            sub: [r.estilo, r.audiencia, r.duracao].filter(Boolean).join(' · '),
+            sub: [r.marca ? 'Campanha ' + r.marca : '', r.estilo, r.duracao].filter(Boolean).join(' · '),
             largo: true,
             corpo: `
-                <div class="c-${cor}">
-                    ${player ? `<div style="margin-bottom:18px">${player}</div>` : `
-                        <div class="ficha-capa capa-cat">
-                            ${r.capa ? `<img src="${UI.esc(r.capa)}" alt="">` : `<span class="ref-emoji">${r.emoji || '🎬'}</span>`}
-                        </div>`}
+                <div class="c-${cor} ${player ? 'ficha-2col' : ''}">
+                    <div class="${player ? 'ficha-video' : ''}">
+                        ${player || `
+                            <div class="ficha-capa capa-cat">
+                                ${r.capa ? `<img src="${UI.esc(r.capa)}" alt="">` : `<span class="ref-emoji">${r.emoji || '🎬'}</span>`}
+                            </div>`}
+                        ${externo ? `<a class="btn ${player ? 'btn-sm' : 'btn-primary'}" href="${UI.esc(externo)}" target="_blank" rel="noopener" style="margin-top:12px">${UI.icon('link', 15)} Abrir no YouTube</a>` : ''}
+                    </div>
 
-                    ${externo ? `<a class="btn ${player ? '' : 'btn-primary'}" href="${UI.esc(externo)}" target="_blank" rel="noopener" style="margin-bottom:18px">${UI.icon('link', 15)} Abrir o vídeo original</a>` : ''}
+                    <div>
+                        ${r.gancho ? `
+                            <div class="note accent" style="margin:0 0 18px">
+                                🪝
+                                <div><b>O gancho:</b> ${UI.esc(r.gancho)}</div>
+                            </div>` : ''}
 
-                    ${r.gancho ? `
-                        <div class="note accent" style="margin-bottom:18px">
-                            🪝
-                            <div><b>O gancho:</b> ${UI.esc(r.gancho)}</div>
-                        </div>` : ''}
+                        ${roteiroHtml ? `
+                            <div class="eyebrow" style="margin-bottom:4px">Como esse vídeo é montado</div>
+                            <div style="margin-bottom:20px">${roteiroHtml}</div>` : ''}
 
-                    ${roteiroHtml ? `
-                        <div class="eyebrow" style="margin-bottom:4px">Como esse vídeo é montado</div>
-                        <div style="margin-bottom:20px">${roteiroHtml}</div>` : ''}
-
-                    ${r.porque ? `<div class="ficha-linha"><div class="ficha-rot">Por que funcionou</div><div class="ficha-val">${UI.esc(r.porque)}</div></div>` : ''}
-                    ${r.diferencial ? `<div class="ficha-linha"><div class="ficha-rot">O diferencial</div><div class="ficha-val">${UI.esc(r.diferencial)}</div></div>` : ''}
-                    ${r.erro ? `<div class="ficha-linha"><div class="ficha-rot">Erro comum</div><div class="ficha-val">${UI.esc(r.erro)}</div></div>` : ''}
+                        ${r.porque ? `<div class="ficha-linha"><div class="ficha-rot">Por que funcionou</div><div class="ficha-val">${UI.esc(r.porque)}</div></div>` : ''}
+                        ${r.diferencial ? `<div class="ficha-linha"><div class="ficha-rot">O diferencial</div><div class="ficha-val">${UI.esc(r.diferencial)}</div></div>` : ''}
+                        ${r.erro ? `<div class="ficha-linha"><div class="ficha-rot">Erro comum</div><div class="ficha-val">${UI.esc(r.erro)}</div></div>` : ''}
+                    </div>
                 </div>`,
             rodape: `
                 ${r.minha ? `<button class="btn btn-danger" data-apagar-ref type="button">${UI.icon('lixo', 15)} Apagar</button>` : ''}
