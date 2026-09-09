@@ -7,7 +7,7 @@ const Seed = (() => {
 
     function vazio({ uid, dia, mes }) {
         return {
-            versao: 2,
+            versao: 3,
             criadoEm: new Date().toISOString(),
             exemplo: false,
             perfil: {
@@ -29,6 +29,7 @@ const Seed = (() => {
             lancamentos: [],
             historicoIg: [],
             postsIg: [],
+            referencias: [],
             mensagens: modelosDeMensagem(uid),
             marcacoes: {}
         };
@@ -294,9 +295,11 @@ const Seed = (() => {
 
         /* a Manu já tem parte do portfólio pronto, pra barra não abrir em zero */
         s.marcacoes = {
-            'pf:0:0': true, 'pf:0:1': true, 'pf:0:2': true,
-            'pf:1:0': true, 'pf:1:3': true,
-            'pf:2:0': true, 'pf:2:1': true, 'pf:2:4': true
+            'cl:capa:0': true, 'cl:capa:1': true, 'cl:capa:2': true, 'cl:capa:3': true, 'cl:capa:4': true, 'cl:capa:5': true,
+            'cl:quem:0': true, 'cl:quem:1': true, 'cl:quem:3': true, 'cl:quem:4': true,
+            'cl:resultados:0': true, 'cl:resultados:1': true, 'cl:resultados:2': true,
+            'cl:nichos:0': true, 'cl:nichos:2': true,
+            'cl:contato:0': true, 'cl:contato:1': true, 'cl:contato:2': true
         };
 
         return s;
@@ -344,5 +347,5 @@ const Seed = (() => {
         ];
     }
 
-    return { criar, vazio, modelosDeMensagem, VERSAO: 2 };
+    return { criar, vazio, modelosDeMensagem, VERSAO: 3 };
 })();
