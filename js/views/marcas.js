@@ -7,12 +7,12 @@ window.Views = window.Views || {};
 Views.marcas = (() => {
 
     const COLUNAS = [
-        { id: 'contato', nome: 'Contato feito', cor: 'info' },
-        { id: 'conversando', nome: 'Conversando', cor: 'info' },
-        { id: 'proposta', nome: 'Proposta enviada', cor: 'warn' },
-        { id: 'fechado', nome: 'Fechado', cor: 'accent' },
-        { id: 'entregue', nome: 'Entregue', cor: 'accent' },
-        { id: 'pago', nome: 'Pago', cor: 'ok' }
+        { id: 'contato', nome: 'Contato feito', cor: 'info', emoji: '👋' },
+        { id: 'conversando', nome: 'Conversando', cor: 'info', emoji: '💬' },
+        { id: 'proposta', nome: 'Proposta enviada', cor: 'warn', emoji: '📄' },
+        { id: 'fechado', nome: 'Fechado', cor: 'accent', emoji: '🤝' },
+        { id: 'entregue', nome: 'Entregue', cor: 'accent', emoji: '📦' },
+        { id: 'pago', nome: 'Pago', cor: 'ok', emoji: '💰' }
     ];
 
     const NOMES = COLUNAS.reduce((a, c) => (a[c.id] = c.nome, a), { perdida: 'Não rolou' });
@@ -98,13 +98,13 @@ Views.marcas = (() => {
         return `
             <section class="col" data-col="${c.id}">
                 <div class="col-head">
-                    <span class="pill pill-${c.cor}" style="padding:2px 8px"><span class="pill-dot"></span></span>
+                    <span style="font-size:15px">${c.emoji}</span>
                     <h4>${c.nome}</h4>
                     <span class="col-count">${itens.length}</span>
                 </div>
                 ${total ? `<div class="col-total">${UI.brl(total)}</div>` : '<div class="col-total">&nbsp;</div>'}
                 <div class="col-body" data-drop="${c.id}">
-                    ${itens.map(cartao).join('') || `<div style="padding:14px 4px;font-size:12.5px;color:var(--muted);text-align:center">Arraste uma marca pra cá</div>`}
+                    ${itens.map(cartao).join('') || `<div style="padding:18px 4px;font-size:12.5px;color:var(--muted);text-align:center;line-height:1.7"><span style="font-size:22px;display:block;opacity:.5">${c.emoji}</span>Arraste uma marca pra cá</div>`}
                 </div>
             </section>`;
     }
@@ -212,10 +212,16 @@ Views.marcas = (() => {
                 const novo = zona.dataset.drop;
                 if (marca.status === novo) return;
                 Store.update('marcas', id, { status: novo });
-                UI.toast(marca.nome + ' foi para "' + NOMES[novo] + '"');
-                if (novo === 'pago') registrarPagamento(marca);
+                if (novo === 'pago') {
+                    UI.confete();
+                    UI.toast('💸 ' + marca.nome + ' pagou! ' + UI.brl(marca.valor));
+                    registrarPagamento(marca);
+                } else {
+                    UI.toast(marca.nome + ' foi para "' + NOMES[novo] + '"');
+                }
                 desenhar();
                 App.atualizarBadges();
+                App.atualizarUrgente();
             });
         });
     }

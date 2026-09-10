@@ -196,9 +196,9 @@ const UI = (() => {
     }
 
     /* ---------- vazio ---------- */
-    function vazio(titulo, texto, botao) {
+    function vazio(titulo, texto, botao, emoji) {
         return `<div class="empty">
-            ${icon('vazio')}
+            ${emoji ? `<span class="empty-emoji">${emoji}</span>` : icon('vazio')}
             <h4>${esc(titulo)}</h4>
             <p>${esc(texto)}</p>
             ${botao || ''}
@@ -244,10 +244,87 @@ const UI = (() => {
         return dados;
     }
 
+    /* ---------- data e hora por extenso ---------- */
+    const DIAS_SEMANA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+
+    function agoraTexto() {
+        const d = new Date();
+        return {
+            data: `${DIAS_SEMANA[d.getDay()]}, ${d.getDate()} de ${MESES_CURTO[d.getMonth()]}`,
+            hora: String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0')
+        };
+    }
+
+    /** quanto do mês já passou, de 0 a 1 */
+    function quantoDoMes() {
+        const d = new Date();
+        const noMes = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+        return d.getDate() / noMes;
+    }
+
+    /* ---------- faixa rolante, igual à da página de vendas ---------- */
+    function faixa(frases) {
+        const estrela = '<span class="estrela"></span>';
+        const grupo = '<div class="faixa-grupo">' +
+            frases.map(f => estrela + '<span>' + esc(f) + '</span>').join('') +
+            '</div>';
+        return `<div class="faixa"><div class="faixa-trilho">${grupo}${grupo}</div></div>`;
+    }
+
+    /* ---------- comemoração ---------- */
+    const CORES_CONFETE = ['#CC7C5E', '#9C563B', '#BE3A22', '#FEF7CF', '#4B7A50', '#09090B'];
+
+    function confete() {
+        const tela = document.getElementById('confete');
+        if (!tela) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        const ctx = tela.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        tela.width = window.innerWidth * dpr;
+        tela.height = window.innerHeight * dpr;
+        tela.style.width = window.innerWidth + 'px';
+        tela.style.height = window.innerHeight + 'px';
+        ctx.scale(dpr, dpr);
+
+        const pecas = Array.from({ length: 90 }, () => ({
+            x: window.innerWidth / 2 + (Math.random() - 0.5) * 260,
+            y: window.innerHeight * 0.32 + (Math.random() - 0.5) * 90,
+            vx: (Math.random() - 0.5) * 9,
+            vy: Math.random() * -11 - 3,
+            giro: Math.random() * Math.PI,
+            vgiro: (Math.random() - 0.5) * 0.24,
+            lado: 5 + Math.random() * 6,
+            cor: CORES_CONFETE[Math.floor(Math.random() * CORES_CONFETE.length)]
+        }));
+
+        let quadros = 0;
+        (function anima() {
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            pecas.forEach(p => {
+                p.vy += 0.36;              // gravidade
+                p.vx *= 0.995;
+                p.x += p.vx;
+                p.y += p.vy;
+                p.giro += p.vgiro;
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.giro);
+                ctx.fillStyle = p.cor;
+                ctx.fillRect(-p.lado / 2, -p.lado / 2, p.lado, p.lado * 0.62);
+                ctx.restore();
+            });
+            quadros++;
+            if (quadros < 150) requestAnimationFrame(anima);
+            else ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        })();
+    }
+
     return {
         icon, brl, brlExato, numero, compacto, data, emDias, prazoTexto, esc, iniciais,
         toast, modal, fecharModal, confirmar, copiar, vazio, barras,
         campo, input, textarea, select, lerForm,
+        agoraTexto, quantoDoMes, faixa, confete,
         MESES, MESES_CURTO
     };
 })();

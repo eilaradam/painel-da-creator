@@ -104,6 +104,8 @@ Views.inicio = (() => {
                 </h1>
             </div>
 
+            ${UI.faixa(frasesDaFaixa(pend, mes, meta))}
+
             <div class="stats stagger" style="margin-bottom:26px">
                 <div class="stat">
                     <div class="stat-label">Recebido em ${UI.MESES[new Date().getMonth()]}</div>
@@ -162,12 +164,19 @@ Views.inicio = (() => {
                     </div>
                 </section>
 
-                <section class="panel">
-                    <div class="panel-head"><h3>Seu funil agora</h3></div>
-                    <div class="panel-body">
-                        ${funilResumo()}
-                    </div>
-                </section>
+                <div>
+                    <section class="panel" style="margin-bottom:16px">
+                        <div class="panel-head"><h3>⏳ Ritmo do mês</h3></div>
+                        <div class="panel-body">${ritmoDoMes(mes, meta)}</div>
+                    </section>
+
+                    <section class="panel">
+                        <div class="panel-head"><h3>Seu funil agora</h3></div>
+                        <div class="panel-body">
+                            ${funilResumo()}
+                        </div>
+                    </section>
+                </div>
             </div>
 
             <div class="grid g2" style="margin-top:22px;align-items:start">
@@ -201,7 +210,7 @@ Views.inicio = (() => {
                                     </div>`;
                                 }).join('')}
                             </div>` :
-                            UI.vazio('Sem entrega marcada', 'Quando você fechar uma marca, cadastre aqui o que precisa gravar e até quando.')}
+                            UI.vazio('Sem entrega marcada', 'Quando você fechar uma marca, cadastre aqui o que precisa gravar e até quando.', '', '📦')}
                     </div>
                 </section>
             </div>
@@ -212,8 +221,60 @@ Views.inicio = (() => {
         });
     }
 
+    /** frases da faixa rolante, montadas com os dados dela */
+    function frasesDaFaixa(pend, mes, meta) {
+        const f = [];
+        const urgentes = pend.filter(i => i.dias <= 0).length;
+        if (urgentes) f.push(`${urgentes} ${urgentes === 1 ? 'coisa' : 'coisas'} pra resolver hoje`);
+        if (mes.recebido) f.push(`${UI.brl(mes.recebido)} recebidos em ${UI.MESES[new Date().getMonth()]}`);
+        if (mes.aReceber) f.push(`${UI.brl(mes.aReceber)} a receber`);
+        if (meta && mes.recebido < meta) f.push(`faltam ${UI.brl(meta - mes.recebido)} pra meta`);
+        if (meta && mes.recebido >= meta) f.push('meta do mês batida');
+
+        const abertas = Store.lista('entregas').filter(e => !['aprovado', 'entregue'].includes(e.status)).length;
+        if (abertas) f.push(`${abertas} ${abertas === 1 ? 'entrega aberta' : 'entregas abertas'}`);
+
+        const ideias = Store.lista('conteudos').filter(c => c.status === 'ideia').length;
+        f.push(ideias ? `${ideias} ${ideias === 1 ? 'ideia na gaveta' : 'ideias na gaveta'}` : 'gaveta de ideias vazia');
+
+        f.push('marca parada é dinheiro parado');
+        f.push('quem não cobra retorno não fecha');
+        return f;
+    }
+
+    /** compara quanto do mês já passou com quanto da meta ela fez */
+    function ritmoDoMes(mes, meta) {
+        const passou = Math.round(UI.quantoDoMes() * 100);
+        const feito = meta ? Math.min(100, Math.round((mes.recebido / meta) * 100)) : 0;
+        const hoje = new Date();
+        const noMes = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).getDate();
+        const faltam = noMes - hoje.getDate();
+
+        let recado;
+        if (!meta) recado = 'Defina sua meta nas configurações pra acompanhar o ritmo.';
+        else if (feito >= 100) recado = '🎉 Meta batida. O que vier agora é lucro.';
+        else if (feito >= passou) recado = `Você está <b class="grifo">adiantada</b>. Continue nesse ritmo e bate a meta antes do fim do mês.`;
+        else recado = `Você está <b class="grifo">atrás do ritmo</b>. Pra chegar na meta faltam ${UI.brl(meta - mes.recebido)} em ${faltam} ${faltam === 1 ? 'dia' : 'dias'}.`;
+
+        return `
+            <div class="ritmo">
+                <div class="ritmo-linha">
+                    <span class="ritmo-rot">Do mês</span>
+                    <div class="progress"><span class="tempo" style="width:${passou}%"></span></div>
+                    <span class="ritmo-num">${passou}%</span>
+                </div>
+                <div class="ritmo-linha">
+                    <span class="ritmo-rot">Da meta</span>
+                    <div class="progress"><span style="width:${feito}%"></span></div>
+                    <span class="ritmo-num">${feito}%</span>
+                </div>
+            </div>
+            <p style="margin:14px 0 0;font-size:13.5px;color:var(--soft);line-height:1.6">${recado}</p>`;
+    }
+
     function saudacao() {
         const h = new Date().getHours();
+        if (h < 5) return 'Boa madrugada';
         if (h < 12) return 'Bom dia';
         if (h < 18) return 'Boa tarde';
         return 'Boa noite';
@@ -262,7 +323,7 @@ Views.inicio = (() => {
             return { rotulo: UI.MESES_CURTO[Number(mm) - 1], valor: total, suave: m === Store.mes(0) };
         });
         const temAlgo = itens.some(i => i.valor > 0);
-        if (!temAlgo) return UI.vazio('Ainda sem lançamento', 'Assim que você registrar o primeiro pagamento recebido, o gráfico aparece aqui.');
+        if (!temAlgo) return UI.vazio('Ainda sem lançamento', 'Assim que você registrar o primeiro pagamento recebido, o gráfico aparece aqui.', '', '💰');
         return UI.barras(itens) +
             `<p style="margin:14px 0 0;font-size:12.5px;color:var(--muted)">O mês atual aparece mais claro porque ainda está correndo.</p>`;
     }

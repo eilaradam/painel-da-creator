@@ -1477,9 +1477,161 @@ td.acts { text-align: right; white-space: nowrap; }
 /* selos ficam acima da capa */
 .ref-badge, .ref-play, .ref-dur { z-index: 3; }
 
+/* ==========================================================================
+   Detalhes que a página de vendas tem e o painel não tinha
+   ========================================================================== */
+
+/* ---------- a estrelinha de 4 pontas, assinatura dela ---------- */
+.estrela {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: currentColor;
+    clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+    flex-shrink: 0;
+}
+.estrela-g { width: 22px; height: 22px; }
+
+/* ---------- barra de urgência no topo, como a do prazo das vagas ---------- */
+.urgente {
+    background: var(--vermelho);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 9px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    transition: background 0.15s;
+}
+.urgente:hover { background: #A62F1A; }
+.urgente b { font-weight: 500; }
+.urgente .num {
+    background: rgba(255, 255, 255, 0.18);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+/* ---------- relógio do topo ---------- */
+.relogio {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--soft);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    white-space: nowrap;
+}
+.relogio .hora { color: var(--ink); font-weight: 500; }
+.pulso {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ok);
+    position: relative;
+    flex-shrink: 0;
+}
+.pulso::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1px solid var(--ok);
+    animation: pulsa 2.4s ease-out infinite;
+}
+@keyframes pulsa {
+    0% { transform: scale(0.7); opacity: 0.9; }
+    100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* ---------- faixa rolante, igual à da página de vendas ---------- */
+.faixa {
+    background: var(--accent);
+    color: #fff;
+    overflow: hidden;
+    border-radius: var(--r-sm);
+    padding: 11px 0;
+    margin-bottom: 24px;
+    position: relative;
+}
+.faixa-trilho {
+    display: flex;
+    width: max-content;
+    animation: correFaixa 42s linear infinite;
+}
+.faixa:hover .faixa-trilho { animation-play-state: paused; }
+.faixa-grupo {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    padding-right: 26px;
+    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    white-space: nowrap;
+}
+@keyframes correFaixa {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* ---------- marca-texto amarelo, como no texto da página dela ---------- */
+.grifo {
+    background: var(--manteiga);
+    box-shadow: 0 0 0 3px var(--manteiga);
+    border-radius: 2px;
+}
+
+/* ---------- ritmo do mês: quanto do mês passou contra quanto você fez ---------- */
+.ritmo { display: flex; flex-direction: column; gap: 11px; }
+.ritmo-linha { display: grid; grid-template-columns: 92px minmax(0, 1fr) 46px; gap: 11px; align-items: center; }
+.ritmo-rot {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--soft);
+}
+.ritmo-num { font-family: 'DM Mono', monospace; font-size: 12.5px; text-align: right; font-weight: 500; }
+.ritmo .progress > span.tempo { background: var(--muted); }
+
+/* ---------- vazio com emoji grande ---------- */
+.empty-emoji { font-size: 44px; line-height: 1; display: block; margin-bottom: 12px; }
+
+/* ---------- confete da comemoração ---------- */
+#confete {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 300;
+}
+
+/* ---------- título da página com emoji ---------- */
+.page-emoji { font-size: 17px; margin-right: 7px; }
+
+@media (max-width: 900px) {
+    .relogio .data { display: none; }
+}
+@media (max-width: 620px) {
+    .relogio { display: none; }
+    .urgente { font-size: 10.5px; gap: 9px; padding: 8px 12px; }
+}
+
 </style>
 </head>
 <body data-versao-local="2026-09-10">
+
+<button class="urgente" id="barraUrgente" type="button" hidden></button>
 
 <div class="shell">
 
@@ -1518,13 +1670,22 @@ td.acts { text-align: right; white-space: nowrap; }
                 <div class="page-title" id="pageTitle">Início</div>
                 <div class="page-hint" id="pageHint"></div>
             </div>
-            <div class="topbar-actions" id="topbarActions"></div>
+            <div class="topbar-actions" id="topbarActions">
+                <div class="relogio" id="relogio">
+                    <span class="pulso"></span>
+                    <span class="data" id="relogioData"></span>
+                    <span class="estrela" style="width:7px;height:7px;opacity:.45"></span>
+                    <span class="hora" id="relogioHora"></span>
+                </div>
+            </div>
         </header>
 
         <div class="view" id="view"></div>
     </main>
 
 </div>
+
+<canvas id="confete"></canvas>
 
 <script>
 /* js/ui.js */
@@ -1726,9 +1887,9 @@ const UI = (() => {
     }
 
     /* ---------- vazio ---------- */
-    function vazio(titulo, texto, botao) {
+    function vazio(titulo, texto, botao, emoji) {
         return `<div class="empty">
-            ${icon('vazio')}
+            ${emoji ? `<span class="empty-emoji">${emoji}</span>` : icon('vazio')}
             <h4>${esc(titulo)}</h4>
             <p>${esc(texto)}</p>
             ${botao || ''}
@@ -1774,10 +1935,87 @@ const UI = (() => {
         return dados;
     }
 
+    /* ---------- data e hora por extenso ---------- */
+    const DIAS_SEMANA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+
+    function agoraTexto() {
+        const d = new Date();
+        return {
+            data: `${DIAS_SEMANA[d.getDay()]}, ${d.getDate()} de ${MESES_CURTO[d.getMonth()]}`,
+            hora: String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0')
+        };
+    }
+
+    /** quanto do mês já passou, de 0 a 1 */
+    function quantoDoMes() {
+        const d = new Date();
+        const noMes = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+        return d.getDate() / noMes;
+    }
+
+    /* ---------- faixa rolante, igual à da página de vendas ---------- */
+    function faixa(frases) {
+        const estrela = '<span class="estrela"></span>';
+        const grupo = '<div class="faixa-grupo">' +
+            frases.map(f => estrela + '<span>' + esc(f) + '</span>').join('') +
+            '</div>';
+        return `<div class="faixa"><div class="faixa-trilho">${grupo}${grupo}</div></div>`;
+    }
+
+    /* ---------- comemoração ---------- */
+    const CORES_CONFETE = ['#CC7C5E', '#9C563B', '#BE3A22', '#FEF7CF', '#4B7A50', '#09090B'];
+
+    function confete() {
+        const tela = document.getElementById('confete');
+        if (!tela) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        const ctx = tela.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        tela.width = window.innerWidth * dpr;
+        tela.height = window.innerHeight * dpr;
+        tela.style.width = window.innerWidth + 'px';
+        tela.style.height = window.innerHeight + 'px';
+        ctx.scale(dpr, dpr);
+
+        const pecas = Array.from({ length: 90 }, () => ({
+            x: window.innerWidth / 2 + (Math.random() - 0.5) * 260,
+            y: window.innerHeight * 0.32 + (Math.random() - 0.5) * 90,
+            vx: (Math.random() - 0.5) * 9,
+            vy: Math.random() * -11 - 3,
+            giro: Math.random() * Math.PI,
+            vgiro: (Math.random() - 0.5) * 0.24,
+            lado: 5 + Math.random() * 6,
+            cor: CORES_CONFETE[Math.floor(Math.random() * CORES_CONFETE.length)]
+        }));
+
+        let quadros = 0;
+        (function anima() {
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            pecas.forEach(p => {
+                p.vy += 0.36;              // gravidade
+                p.vx *= 0.995;
+                p.x += p.vx;
+                p.y += p.vy;
+                p.giro += p.vgiro;
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.giro);
+                ctx.fillStyle = p.cor;
+                ctx.fillRect(-p.lado / 2, -p.lado / 2, p.lado, p.lado * 0.62);
+                ctx.restore();
+            });
+            quadros++;
+            if (quadros < 150) requestAnimationFrame(anima);
+            else ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        })();
+    }
+
     return {
         icon, brl, brlExato, numero, compacto, data, emDias, prazoTexto, esc, iniciais,
         toast, modal, fecharModal, confirmar, copiar, vazio, barras,
         campo, input, textarea, select, lerForm,
+        agoraTexto, quantoDoMes, faixa, confete,
         MESES, MESES_CURTO
     };
 })();
@@ -3008,6 +3246,8 @@ Views.inicio = (() => {
                 </h1>
             </div>
 
+            ${UI.faixa(frasesDaFaixa(pend, mes, meta))}
+
             <div class="stats stagger" style="margin-bottom:26px">
                 <div class="stat">
                     <div class="stat-label">Recebido em ${UI.MESES[new Date().getMonth()]}</div>
@@ -3066,12 +3306,19 @@ Views.inicio = (() => {
                     </div>
                 </section>
 
-                <section class="panel">
-                    <div class="panel-head"><h3>Seu funil agora</h3></div>
-                    <div class="panel-body">
-                        ${funilResumo()}
-                    </div>
-                </section>
+                <div>
+                    <section class="panel" style="margin-bottom:16px">
+                        <div class="panel-head"><h3>⏳ Ritmo do mês</h3></div>
+                        <div class="panel-body">${ritmoDoMes(mes, meta)}</div>
+                    </section>
+
+                    <section class="panel">
+                        <div class="panel-head"><h3>Seu funil agora</h3></div>
+                        <div class="panel-body">
+                            ${funilResumo()}
+                        </div>
+                    </section>
+                </div>
             </div>
 
             <div class="grid g2" style="margin-top:22px;align-items:start">
@@ -3105,7 +3352,7 @@ Views.inicio = (() => {
                                     </div>`;
                                 }).join('')}
                             </div>` :
-                            UI.vazio('Sem entrega marcada', 'Quando você fechar uma marca, cadastre aqui o que precisa gravar e até quando.')}
+                            UI.vazio('Sem entrega marcada', 'Quando você fechar uma marca, cadastre aqui o que precisa gravar e até quando.', '', '📦')}
                     </div>
                 </section>
             </div>
@@ -3116,8 +3363,60 @@ Views.inicio = (() => {
         });
     }
 
+    /** frases da faixa rolante, montadas com os dados dela */
+    function frasesDaFaixa(pend, mes, meta) {
+        const f = [];
+        const urgentes = pend.filter(i => i.dias <= 0).length;
+        if (urgentes) f.push(`${urgentes} ${urgentes === 1 ? 'coisa' : 'coisas'} pra resolver hoje`);
+        if (mes.recebido) f.push(`${UI.brl(mes.recebido)} recebidos em ${UI.MESES[new Date().getMonth()]}`);
+        if (mes.aReceber) f.push(`${UI.brl(mes.aReceber)} a receber`);
+        if (meta && mes.recebido < meta) f.push(`faltam ${UI.brl(meta - mes.recebido)} pra meta`);
+        if (meta && mes.recebido >= meta) f.push('meta do mês batida');
+
+        const abertas = Store.lista('entregas').filter(e => !['aprovado', 'entregue'].includes(e.status)).length;
+        if (abertas) f.push(`${abertas} ${abertas === 1 ? 'entrega aberta' : 'entregas abertas'}`);
+
+        const ideias = Store.lista('conteudos').filter(c => c.status === 'ideia').length;
+        f.push(ideias ? `${ideias} ${ideias === 1 ? 'ideia na gaveta' : 'ideias na gaveta'}` : 'gaveta de ideias vazia');
+
+        f.push('marca parada é dinheiro parado');
+        f.push('quem não cobra retorno não fecha');
+        return f;
+    }
+
+    /** compara quanto do mês já passou com quanto da meta ela fez */
+    function ritmoDoMes(mes, meta) {
+        const passou = Math.round(UI.quantoDoMes() * 100);
+        const feito = meta ? Math.min(100, Math.round((mes.recebido / meta) * 100)) : 0;
+        const hoje = new Date();
+        const noMes = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).getDate();
+        const faltam = noMes - hoje.getDate();
+
+        let recado;
+        if (!meta) recado = 'Defina sua meta nas configurações pra acompanhar o ritmo.';
+        else if (feito >= 100) recado = '🎉 Meta batida. O que vier agora é lucro.';
+        else if (feito >= passou) recado = `Você está <b class="grifo">adiantada</b>. Continue nesse ritmo e bate a meta antes do fim do mês.`;
+        else recado = `Você está <b class="grifo">atrás do ritmo</b>. Pra chegar na meta faltam ${UI.brl(meta - mes.recebido)} em ${faltam} ${faltam === 1 ? 'dia' : 'dias'}.`;
+
+        return `
+            <div class="ritmo">
+                <div class="ritmo-linha">
+                    <span class="ritmo-rot">Do mês</span>
+                    <div class="progress"><span class="tempo" style="width:${passou}%"></span></div>
+                    <span class="ritmo-num">${passou}%</span>
+                </div>
+                <div class="ritmo-linha">
+                    <span class="ritmo-rot">Da meta</span>
+                    <div class="progress"><span style="width:${feito}%"></span></div>
+                    <span class="ritmo-num">${feito}%</span>
+                </div>
+            </div>
+            <p style="margin:14px 0 0;font-size:13.5px;color:var(--soft);line-height:1.6">${recado}</p>`;
+    }
+
     function saudacao() {
         const h = new Date().getHours();
+        if (h < 5) return 'Boa madrugada';
         if (h < 12) return 'Bom dia';
         if (h < 18) return 'Boa tarde';
         return 'Boa noite';
@@ -3166,7 +3465,7 @@ Views.inicio = (() => {
             return { rotulo: UI.MESES_CURTO[Number(mm) - 1], valor: total, suave: m === Store.mes(0) };
         });
         const temAlgo = itens.some(i => i.valor > 0);
-        if (!temAlgo) return UI.vazio('Ainda sem lançamento', 'Assim que você registrar o primeiro pagamento recebido, o gráfico aparece aqui.');
+        if (!temAlgo) return UI.vazio('Ainda sem lançamento', 'Assim que você registrar o primeiro pagamento recebido, o gráfico aparece aqui.', '', '💰');
         return UI.barras(itens) +
             `<p style="margin:14px 0 0;font-size:12.5px;color:var(--muted)">O mês atual aparece mais claro porque ainda está correndo.</p>`;
     }
@@ -3190,12 +3489,12 @@ window.Views = window.Views || {};
 Views.marcas = (() => {
 
     const COLUNAS = [
-        { id: 'contato', nome: 'Contato feito', cor: 'info' },
-        { id: 'conversando', nome: 'Conversando', cor: 'info' },
-        { id: 'proposta', nome: 'Proposta enviada', cor: 'warn' },
-        { id: 'fechado', nome: 'Fechado', cor: 'accent' },
-        { id: 'entregue', nome: 'Entregue', cor: 'accent' },
-        { id: 'pago', nome: 'Pago', cor: 'ok' }
+        { id: 'contato', nome: 'Contato feito', cor: 'info', emoji: '👋' },
+        { id: 'conversando', nome: 'Conversando', cor: 'info', emoji: '💬' },
+        { id: 'proposta', nome: 'Proposta enviada', cor: 'warn', emoji: '📄' },
+        { id: 'fechado', nome: 'Fechado', cor: 'accent', emoji: '🤝' },
+        { id: 'entregue', nome: 'Entregue', cor: 'accent', emoji: '📦' },
+        { id: 'pago', nome: 'Pago', cor: 'ok', emoji: '💰' }
     ];
 
     const NOMES = COLUNAS.reduce((a, c) => (a[c.id] = c.nome, a), { perdida: 'Não rolou' });
@@ -3281,13 +3580,13 @@ Views.marcas = (() => {
         return `
             <section class="col" data-col="${c.id}">
                 <div class="col-head">
-                    <span class="pill pill-${c.cor}" style="padding:2px 8px"><span class="pill-dot"></span></span>
+                    <span style="font-size:15px">${c.emoji}</span>
                     <h4>${c.nome}</h4>
                     <span class="col-count">${itens.length}</span>
                 </div>
                 ${total ? `<div class="col-total">${UI.brl(total)}</div>` : '<div class="col-total">&nbsp;</div>'}
                 <div class="col-body" data-drop="${c.id}">
-                    ${itens.map(cartao).join('') || `<div style="padding:14px 4px;font-size:12.5px;color:var(--muted);text-align:center">Arraste uma marca pra cá</div>`}
+                    ${itens.map(cartao).join('') || `<div style="padding:18px 4px;font-size:12.5px;color:var(--muted);text-align:center;line-height:1.7"><span style="font-size:22px;display:block;opacity:.5">${c.emoji}</span>Arraste uma marca pra cá</div>`}
                 </div>
             </section>`;
     }
@@ -3395,10 +3694,16 @@ Views.marcas = (() => {
                 const novo = zona.dataset.drop;
                 if (marca.status === novo) return;
                 Store.update('marcas', id, { status: novo });
-                UI.toast(marca.nome + ' foi para "' + NOMES[novo] + '"');
-                if (novo === 'pago') registrarPagamento(marca);
+                if (novo === 'pago') {
+                    UI.confete();
+                    UI.toast('💸 ' + marca.nome + ' pagou! ' + UI.brl(marca.valor));
+                    registrarPagamento(marca);
+                } else {
+                    UI.toast(marca.nome + ' foi para "' + NOMES[novo] + '"');
+                }
                 desenhar();
                 App.atualizarBadges();
+                App.atualizarUrgente();
             });
         });
     }
@@ -6236,16 +6541,16 @@ Views.config = (() => {
 const App = (() => {
 
     const ABAS = [
-        { id: 'inicio', grupo: '', icone: 'casa', view: () => Views.inicio },
-        { id: 'marcas', grupo: 'O dinheiro', icone: 'marcas', view: () => Views.marcas },
-        { id: 'propostas', grupo: '', icone: 'proposta', view: () => Views.propostas },
-        { id: 'entregas', grupo: '', icone: 'entrega', view: () => Views.entregas },
-        { id: 'financeiro', grupo: '', icone: 'dinheiro', view: () => Views.financeiro },
-        { id: 'conteudo', grupo: 'O conteúdo', icone: 'video', view: () => Views.conteudo },
-        { id: 'numeros', grupo: '', icone: 'grafico', view: () => Views.numeros },
-        { id: 'checklist', grupo: '', icone: 'check', view: () => Views.checklist },
-        { id: 'mensagens', grupo: 'Apoio', icone: 'chat', view: () => Views.mensagens },
-        { id: 'config', grupo: '', icone: 'config', view: () => Views.config }
+        { id: 'inicio', grupo: '', icone: 'casa', emoji: '👋', view: () => Views.inicio },
+        { id: 'marcas', grupo: 'O dinheiro', icone: 'marcas', emoji: '🤝', view: () => Views.marcas },
+        { id: 'propostas', grupo: '', icone: 'proposta', emoji: '📄', view: () => Views.propostas },
+        { id: 'entregas', grupo: '', icone: 'entrega', emoji: '📦', view: () => Views.entregas },
+        { id: 'financeiro', grupo: '', icone: 'dinheiro', emoji: '💰', view: () => Views.financeiro },
+        { id: 'conteudo', grupo: 'O conteúdo', icone: 'video', emoji: '🎬', view: () => Views.conteudo },
+        { id: 'numeros', grupo: '', icone: 'grafico', emoji: '📈', view: () => Views.numeros },
+        { id: 'checklist', grupo: '', icone: 'check', emoji: '✅', view: () => Views.checklist },
+        { id: 'mensagens', grupo: 'Apoio', icone: 'chat', emoji: '💬', view: () => Views.mensagens },
+        { id: 'config', grupo: '', icone: 'config', emoji: '⚙️', view: () => Views.config }
     ];
 
     let atual = 'inicio';
@@ -6268,8 +6573,46 @@ const App = (() => {
             document.body.classList.remove('nav-open');
         });
 
+        tiquetaque();
+        setInterval(tiquetaque, 20000);
+
+        document.getElementById('barraUrgente').addEventListener('click', () => ir('marcas'));
+
         const inicial = location.hash.replace('#', '');
         ir(ABAS.some(a => a.id === inicial) ? inicial : 'inicio', true);
+    }
+
+    /* ---------- relógio do topo ---------- */
+    function tiquetaque() {
+        const t = UI.agoraTexto();
+        const d = document.getElementById('relogioData');
+        const h = document.getElementById('relogioHora');
+        if (d) d.textContent = t.data;
+        if (h) h.textContent = t.hora;
+    }
+
+    /* ---------- barra vermelha do topo: só aparece quando algo venceu ---------- */
+    function atualizarUrgente() {
+        const barra = document.getElementById('barraUrgente');
+        if (!barra) return;
+
+        const marcas = Store.lista('marcas').filter(m =>
+            !['pago', 'perdida'].includes(m.status) && m.prazoRetorno && (UI.emDias(m.prazoRetorno) ?? 99) < 0);
+        const entregas = Store.lista('entregas').filter(e =>
+            e.status !== 'aprovado' && e.prazo && (UI.emDias(e.prazo) ?? 99) < 0);
+        const grana = Store.lista('lancamentos').filter(l =>
+            l.tipo === 'entrada' && l.status === 'previsto' && (UI.emDias(l.data) ?? 99) < 0);
+
+        const partes = [];
+        if (marcas.length) partes.push(`<span class="num">${marcas.length}</span> ${marcas.length === 1 ? 'marca esperando retorno' : 'marcas esperando retorno'}`);
+        if (entregas.length) partes.push(`<span class="num">${entregas.length}</span> ${entregas.length === 1 ? 'entrega atrasada' : 'entregas atrasadas'}`);
+        if (grana.length) partes.push(`<span class="num">${UI.brl(grana.reduce((t, l) => t + Number(l.valor || 0), 0))}</span> atrasados pra receber`);
+
+        barra.hidden = !partes.length;
+        if (partes.length) {
+            barra.innerHTML = '<b>Precisa de você hoje</b>' +
+                partes.map(p => '<span>' + p + '</span>').join('<span class="estrela"></span>');
+        }
     }
 
     function montarSidebar() {
@@ -6304,7 +6647,8 @@ const App = (() => {
         });
 
         const v = aba.view();
-        document.getElementById('pageTitle').textContent = v.titulo;
+        document.getElementById('pageTitle').innerHTML =
+            `<span class="page-emoji">${aba.emoji}</span>${UI.esc(v.titulo)}`;
         document.getElementById('pageHint').textContent = v.dica || '';
 
         const palco = document.getElementById('view');
@@ -6315,6 +6659,7 @@ const App = (() => {
         document.body.classList.remove('nav-open');
         window.scrollTo({ top: 0 });
         atualizarBadges();
+        atualizarUrgente();
     }
 
     /* ---------- avisos na lateral ---------- */
@@ -6349,7 +6694,7 @@ const App = (() => {
         ir(atual, true);
     }
 
-    return { iniciar, ir, atualizarBadges, atualizarPerfil, recarregar, ABAS };
+    return { iniciar, ir, atualizarBadges, atualizarPerfil, atualizarUrgente, recarregar, ABAS };
 })();
 
 document.addEventListener('DOMContentLoaded', App.iniciar);

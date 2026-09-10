@@ -1462,3 +1462,153 @@ td.acts { text-align: right; white-space: nowrap; }
 
 /* selos ficam acima da capa */
 .ref-badge, .ref-play, .ref-dur { z-index: 3; }
+
+/* ==========================================================================
+   Detalhes que a página de vendas tem e o painel não tinha
+   ========================================================================== */
+
+/* ---------- a estrelinha de 4 pontas, assinatura dela ---------- */
+.estrela {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: currentColor;
+    clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+    flex-shrink: 0;
+}
+.estrela-g { width: 22px; height: 22px; }
+
+/* ---------- barra de urgência no topo, como a do prazo das vagas ---------- */
+.urgente {
+    background: var(--vermelho);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 9px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    transition: background 0.15s;
+}
+.urgente:hover { background: #A62F1A; }
+.urgente b { font-weight: 500; }
+.urgente .num {
+    background: rgba(255, 255, 255, 0.18);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+/* ---------- relógio do topo ---------- */
+.relogio {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--soft);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    white-space: nowrap;
+}
+.relogio .hora { color: var(--ink); font-weight: 500; }
+.pulso {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ok);
+    position: relative;
+    flex-shrink: 0;
+}
+.pulso::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1px solid var(--ok);
+    animation: pulsa 2.4s ease-out infinite;
+}
+@keyframes pulsa {
+    0% { transform: scale(0.7); opacity: 0.9; }
+    100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* ---------- faixa rolante, igual à da página de vendas ---------- */
+.faixa {
+    background: var(--accent);
+    color: #fff;
+    overflow: hidden;
+    border-radius: var(--r-sm);
+    padding: 11px 0;
+    margin-bottom: 24px;
+    position: relative;
+}
+.faixa-trilho {
+    display: flex;
+    width: max-content;
+    animation: correFaixa 42s linear infinite;
+}
+.faixa:hover .faixa-trilho { animation-play-state: paused; }
+.faixa-grupo {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    padding-right: 26px;
+    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    white-space: nowrap;
+}
+@keyframes correFaixa {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* ---------- marca-texto amarelo, como no texto da página dela ---------- */
+.grifo {
+    background: var(--manteiga);
+    box-shadow: 0 0 0 3px var(--manteiga);
+    border-radius: 2px;
+}
+
+/* ---------- ritmo do mês: quanto do mês passou contra quanto você fez ---------- */
+.ritmo { display: flex; flex-direction: column; gap: 11px; }
+.ritmo-linha { display: grid; grid-template-columns: 92px minmax(0, 1fr) 46px; gap: 11px; align-items: center; }
+.ritmo-rot {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--soft);
+}
+.ritmo-num { font-family: 'DM Mono', monospace; font-size: 12.5px; text-align: right; font-weight: 500; }
+.ritmo .progress > span.tempo { background: var(--muted); }
+
+/* ---------- vazio com emoji grande ---------- */
+.empty-emoji { font-size: 44px; line-height: 1; display: block; margin-bottom: 12px; }
+
+/* ---------- confete da comemoração ---------- */
+#confete {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 300;
+}
+
+/* ---------- título da página com emoji ---------- */
+.page-emoji { font-size: 17px; margin-right: 7px; }
+
+@media (max-width: 900px) {
+    .relogio .data { display: none; }
+}
+@media (max-width: 620px) {
+    .relogio { display: none; }
+    .urgente { font-size: 10.5px; gap: 9px; padding: 8px 12px; }
+}

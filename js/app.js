@@ -5,16 +5,16 @@
 const App = (() => {
 
     const ABAS = [
-        { id: 'inicio', grupo: '', icone: 'casa', view: () => Views.inicio },
-        { id: 'marcas', grupo: 'O dinheiro', icone: 'marcas', view: () => Views.marcas },
-        { id: 'propostas', grupo: '', icone: 'proposta', view: () => Views.propostas },
-        { id: 'entregas', grupo: '', icone: 'entrega', view: () => Views.entregas },
-        { id: 'financeiro', grupo: '', icone: 'dinheiro', view: () => Views.financeiro },
-        { id: 'conteudo', grupo: 'O conteúdo', icone: 'video', view: () => Views.conteudo },
-        { id: 'numeros', grupo: '', icone: 'grafico', view: () => Views.numeros },
-        { id: 'checklist', grupo: '', icone: 'check', view: () => Views.checklist },
-        { id: 'mensagens', grupo: 'Apoio', icone: 'chat', view: () => Views.mensagens },
-        { id: 'config', grupo: '', icone: 'config', view: () => Views.config }
+        { id: 'inicio', grupo: '', icone: 'casa', emoji: '👋', view: () => Views.inicio },
+        { id: 'marcas', grupo: 'O dinheiro', icone: 'marcas', emoji: '🤝', view: () => Views.marcas },
+        { id: 'propostas', grupo: '', icone: 'proposta', emoji: '📄', view: () => Views.propostas },
+        { id: 'entregas', grupo: '', icone: 'entrega', emoji: '📦', view: () => Views.entregas },
+        { id: 'financeiro', grupo: '', icone: 'dinheiro', emoji: '💰', view: () => Views.financeiro },
+        { id: 'conteudo', grupo: 'O conteúdo', icone: 'video', emoji: '🎬', view: () => Views.conteudo },
+        { id: 'numeros', grupo: '', icone: 'grafico', emoji: '📈', view: () => Views.numeros },
+        { id: 'checklist', grupo: '', icone: 'check', emoji: '✅', view: () => Views.checklist },
+        { id: 'mensagens', grupo: 'Apoio', icone: 'chat', emoji: '💬', view: () => Views.mensagens },
+        { id: 'config', grupo: '', icone: 'config', emoji: '⚙️', view: () => Views.config }
     ];
 
     let atual = 'inicio';
@@ -37,8 +37,46 @@ const App = (() => {
             document.body.classList.remove('nav-open');
         });
 
+        tiquetaque();
+        setInterval(tiquetaque, 20000);
+
+        document.getElementById('barraUrgente').addEventListener('click', () => ir('marcas'));
+
         const inicial = location.hash.replace('#', '');
         ir(ABAS.some(a => a.id === inicial) ? inicial : 'inicio', true);
+    }
+
+    /* ---------- relógio do topo ---------- */
+    function tiquetaque() {
+        const t = UI.agoraTexto();
+        const d = document.getElementById('relogioData');
+        const h = document.getElementById('relogioHora');
+        if (d) d.textContent = t.data;
+        if (h) h.textContent = t.hora;
+    }
+
+    /* ---------- barra vermelha do topo: só aparece quando algo venceu ---------- */
+    function atualizarUrgente() {
+        const barra = document.getElementById('barraUrgente');
+        if (!barra) return;
+
+        const marcas = Store.lista('marcas').filter(m =>
+            !['pago', 'perdida'].includes(m.status) && m.prazoRetorno && (UI.emDias(m.prazoRetorno) ?? 99) < 0);
+        const entregas = Store.lista('entregas').filter(e =>
+            e.status !== 'aprovado' && e.prazo && (UI.emDias(e.prazo) ?? 99) < 0);
+        const grana = Store.lista('lancamentos').filter(l =>
+            l.tipo === 'entrada' && l.status === 'previsto' && (UI.emDias(l.data) ?? 99) < 0);
+
+        const partes = [];
+        if (marcas.length) partes.push(`<span class="num">${marcas.length}</span> ${marcas.length === 1 ? 'marca esperando retorno' : 'marcas esperando retorno'}`);
+        if (entregas.length) partes.push(`<span class="num">${entregas.length}</span> ${entregas.length === 1 ? 'entrega atrasada' : 'entregas atrasadas'}`);
+        if (grana.length) partes.push(`<span class="num">${UI.brl(grana.reduce((t, l) => t + Number(l.valor || 0), 0))}</span> atrasados pra receber`);
+
+        barra.hidden = !partes.length;
+        if (partes.length) {
+            barra.innerHTML = '<b>Precisa de você hoje</b>' +
+                partes.map(p => '<span>' + p + '</span>').join('<span class="estrela"></span>');
+        }
     }
 
     function montarSidebar() {
@@ -73,7 +111,8 @@ const App = (() => {
         });
 
         const v = aba.view();
-        document.getElementById('pageTitle').textContent = v.titulo;
+        document.getElementById('pageTitle').innerHTML =
+            `<span class="page-emoji">${aba.emoji}</span>${UI.esc(v.titulo)}`;
         document.getElementById('pageHint').textContent = v.dica || '';
 
         const palco = document.getElementById('view');
@@ -84,6 +123,7 @@ const App = (() => {
         document.body.classList.remove('nav-open');
         window.scrollTo({ top: 0 });
         atualizarBadges();
+        atualizarUrgente();
     }
 
     /* ---------- avisos na lateral ---------- */
@@ -118,7 +158,7 @@ const App = (() => {
         ir(atual, true);
     }
 
-    return { iniciar, ir, atualizarBadges, atualizarPerfil, recarregar, ABAS };
+    return { iniciar, ir, atualizarBadges, atualizarPerfil, atualizarUrgente, recarregar, ABAS };
 })();
 
 document.addEventListener('DOMContentLoaded', App.iniciar);
