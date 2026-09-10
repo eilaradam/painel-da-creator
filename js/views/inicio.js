@@ -104,8 +104,6 @@ Views.inicio = (() => {
                 </h1>
             </div>
 
-            ${UI.faixa(frasesDaFaixa(pend, mes, meta))}
-
             <div class="stats stagger" style="margin-bottom:26px">
                 <div class="stat">
                     <div class="stat-label">Recebido em ${UI.MESES[new Date().getMonth()]}</div>
@@ -219,27 +217,6 @@ Views.inicio = (() => {
         raiz.querySelectorAll('[data-ir]').forEach(b => {
             b.addEventListener('click', () => App.ir(b.dataset.ir));
         });
-    }
-
-    /** frases da faixa rolante, montadas com os dados dela */
-    function frasesDaFaixa(pend, mes, meta) {
-        const f = [];
-        const urgentes = pend.filter(i => i.dias <= 0).length;
-        if (urgentes) f.push(`${urgentes} ${urgentes === 1 ? 'coisa' : 'coisas'} pra resolver hoje`);
-        if (mes.recebido) f.push(`${UI.brl(mes.recebido)} recebidos em ${UI.MESES[new Date().getMonth()]}`);
-        if (mes.aReceber) f.push(`${UI.brl(mes.aReceber)} a receber`);
-        if (meta && mes.recebido < meta) f.push(`faltam ${UI.brl(meta - mes.recebido)} pra meta`);
-        if (meta && mes.recebido >= meta) f.push('meta do mês batida');
-
-        const abertas = Store.lista('entregas').filter(e => !['aprovado', 'entregue'].includes(e.status)).length;
-        if (abertas) f.push(`${abertas} ${abertas === 1 ? 'entrega aberta' : 'entregas abertas'}`);
-
-        const ideias = Store.lista('conteudos').filter(c => c.status === 'ideia').length;
-        f.push(ideias ? `${ideias} ${ideias === 1 ? 'ideia na gaveta' : 'ideias na gaveta'}` : 'gaveta de ideias vazia');
-
-        f.push('marca parada é dinheiro parado');
-        f.push('quem não cobra retorno não fecha');
-        return f;
     }
 
     /** compara quanto do mês já passou com quanto da meta ela fez */

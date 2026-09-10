@@ -1540,37 +1540,6 @@ td.acts { text-align: right; white-space: nowrap; }
     100% { transform: scale(1.7); opacity: 0; }
 }
 
-/* ---------- faixa rolante, igual à da página de vendas ---------- */
-.faixa {
-    background: var(--accent);
-    color: #fff;
-    overflow: hidden;
-    border-radius: var(--r-sm);
-    padding: 11px 0;
-    margin-bottom: 24px;
-    position: relative;
-}
-.faixa-trilho {
-    display: flex;
-    width: max-content;
-    animation: correFaixa 42s linear infinite;
-}
-.faixa:hover .faixa-trilho { animation-play-state: paused; }
-.faixa-grupo {
-    display: flex;
-    align-items: center;
-    gap: 26px;
-    padding-right: 26px;
-    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    white-space: nowrap;
-}
-@keyframes correFaixa {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-}
-
 /* ---------- marca-texto amarelo, como no texto da página dela ---------- */
 .grifo {
     background: var(--manteiga);

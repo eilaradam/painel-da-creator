@@ -262,15 +262,6 @@ const UI = (() => {
         return d.getDate() / noMes;
     }
 
-    /* ---------- faixa rolante, igual à da página de vendas ---------- */
-    function faixa(frases) {
-        const estrela = '<span class="estrela"></span>';
-        const grupo = '<div class="faixa-grupo">' +
-            frases.map(f => estrela + '<span>' + esc(f) + '</span>').join('') +
-            '</div>';
-        return `<div class="faixa"><div class="faixa-trilho">${grupo}${grupo}</div></div>`;
-    }
-
     /* ---------- comemoração ---------- */
     const CORES_CONFETE = ['#CC7C5E', '#9C563B', '#BE3A22', '#FEF7CF', '#4B7A50', '#09090B'];
 
@@ -324,7 +315,7 @@ const UI = (() => {
         icon, brl, brlExato, numero, compacto, data, emDias, prazoTexto, esc, iniciais,
         toast, modal, fecharModal, confirmar, copiar, vazio, barras,
         campo, input, textarea, select, lerForm,
-        agoraTexto, quantoDoMes, faixa, confete,
+        agoraTexto, quantoDoMes, confete,
         MESES, MESES_CURTO
     };
 })();

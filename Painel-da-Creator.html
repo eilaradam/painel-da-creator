@@ -1554,37 +1554,6 @@ td.acts { text-align: right; white-space: nowrap; }
     100% { transform: scale(1.7); opacity: 0; }
 }
 
-/* ---------- faixa rolante, igual à da página de vendas ---------- */
-.faixa {
-    background: var(--accent);
-    color: #fff;
-    overflow: hidden;
-    border-radius: var(--r-sm);
-    padding: 11px 0;
-    margin-bottom: 24px;
-    position: relative;
-}
-.faixa-trilho {
-    display: flex;
-    width: max-content;
-    animation: correFaixa 42s linear infinite;
-}
-.faixa:hover .faixa-trilho { animation-play-state: paused; }
-.faixa-grupo {
-    display: flex;
-    align-items: center;
-    gap: 26px;
-    padding-right: 26px;
-    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    white-space: nowrap;
-}
-@keyframes correFaixa {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-}
-
 /* ---------- marca-texto amarelo, como no texto da página dela ---------- */
 .grifo {
     background: var(--manteiga);
@@ -1953,15 +1922,6 @@ const UI = (() => {
         return d.getDate() / noMes;
     }
 
-    /* ---------- faixa rolante, igual à da página de vendas ---------- */
-    function faixa(frases) {
-        const estrela = '<span class="estrela"></span>';
-        const grupo = '<div class="faixa-grupo">' +
-            frases.map(f => estrela + '<span>' + esc(f) + '</span>').join('') +
-            '</div>';
-        return `<div class="faixa"><div class="faixa-trilho">${grupo}${grupo}</div></div>`;
-    }
-
     /* ---------- comemoração ---------- */
     const CORES_CONFETE = ['#CC7C5E', '#9C563B', '#BE3A22', '#FEF7CF', '#4B7A50', '#09090B'];
 
@@ -2015,7 +1975,7 @@ const UI = (() => {
         icon, brl, brlExato, numero, compacto, data, emDias, prazoTexto, esc, iniciais,
         toast, modal, fecharModal, confirmar, copiar, vazio, barras,
         campo, input, textarea, select, lerForm,
-        agoraTexto, quantoDoMes, faixa, confete,
+        agoraTexto, quantoDoMes, confete,
         MESES, MESES_CURTO
     };
 })();
@@ -3246,8 +3206,6 @@ Views.inicio = (() => {
                 </h1>
             </div>
 
-            ${UI.faixa(frasesDaFaixa(pend, mes, meta))}
-
             <div class="stats stagger" style="margin-bottom:26px">
                 <div class="stat">
                     <div class="stat-label">Recebido em ${UI.MESES[new Date().getMonth()]}</div>
@@ -3361,27 +3319,6 @@ Views.inicio = (() => {
         raiz.querySelectorAll('[data-ir]').forEach(b => {
             b.addEventListener('click', () => App.ir(b.dataset.ir));
         });
-    }
-
-    /** frases da faixa rolante, montadas com os dados dela */
-    function frasesDaFaixa(pend, mes, meta) {
-        const f = [];
-        const urgentes = pend.filter(i => i.dias <= 0).length;
-        if (urgentes) f.push(`${urgentes} ${urgentes === 1 ? 'coisa' : 'coisas'} pra resolver hoje`);
-        if (mes.recebido) f.push(`${UI.brl(mes.recebido)} recebidos em ${UI.MESES[new Date().getMonth()]}`);
-        if (mes.aReceber) f.push(`${UI.brl(mes.aReceber)} a receber`);
-        if (meta && mes.recebido < meta) f.push(`faltam ${UI.brl(meta - mes.recebido)} pra meta`);
-        if (meta && mes.recebido >= meta) f.push('meta do mês batida');
-
-        const abertas = Store.lista('entregas').filter(e => !['aprovado', 'entregue'].includes(e.status)).length;
-        if (abertas) f.push(`${abertas} ${abertas === 1 ? 'entrega aberta' : 'entregas abertas'}`);
-
-        const ideias = Store.lista('conteudos').filter(c => c.status === 'ideia').length;
-        f.push(ideias ? `${ideias} ${ideias === 1 ? 'ideia na gaveta' : 'ideias na gaveta'}` : 'gaveta de ideias vazia');
-
-        f.push('marca parada é dinheiro parado');
-        f.push('quem não cobra retorno não fecha');
-        return f;
     }
 
     /** compara quanto do mês já passou com quanto da meta ela fez */
