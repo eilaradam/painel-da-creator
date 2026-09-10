@@ -6,70 +6,71 @@
     <title>Painel da Creator</title>
     <meta name="description" content="O painel que organiza a carreira de uma creator: marcas, propostas, entregas, conteúdo, números e dinheiro num lugar só.">
     <meta name="robots" content="noindex">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23C8441A'/><text y='72' x='50' text-anchor='middle' font-size='58' font-family='system-ui,sans-serif' font-weight='700' fill='white'>P</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='6' fill='%23CC7C5E'/><text y='72' x='50' text-anchor='middle' font-size='58' font-family='system-ui,sans-serif' font-weight='700' fill='white'>P</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
 /* css/app.css */
 /* ==========================================================================
    Painel da Creator · design system
-   Mesma linguagem do MeuManager: laranja #C8441A, fundo cinza frio,
-   Geist, cartões de vidro (branco translúcido + blur) e cantos grandes.
+   Mesma linguagem de imersao.laradam.com: papel creme, terracota,
+   Be Vietnam Pro nos títulos, DM Mono nos rótulos, cantos quase retos
+   e sombra dura (sem desfoque) nos botões.
    ========================================================================== */
 
 :root {
-    /* superfícies · cinza frio do MeuManager, com o branco nos cards */
-    --bg: #F5F5F7;
+    /* mesma paleta de imersao.laradam.com */
+    --bg: #F4F0E9;              /* papel */
     --surface: #FFFFFF;
-    --surface-2: #FAFAFA;
-    --warm: #EFEFF2;
-    --vidro: rgba(255, 255, 255, 0.72);
-    --vidro-forte: rgba(255, 255, 255, 0.86);
+    --surface-2: #FBF9F5;       /* quase branco */
+    --warm: #EAE5DB;            /* papel 2 */
+    --manteiga: #FEF7CF;        /* marca-texto */
 
     /* texto */
-    --ink: #121212;
-    --soft: #6E6E73;
-    --muted: #9B9BA1;
+    --ink: #09090B;             /* tinta */
+    --soft: #57534E;            /* tinta 2 */
+    --muted: #A9A9A9;
 
-    /* marca · laranja do MeuManager */
-    --accent: #C8441A;
-    --accent-dark: #A3360F;
-    --accent-light: #E06340;
-    --accent-glow: rgba(200, 68, 26, 0.09);
-    --accent-tint: #FFF0E8;
-    --accent-texto: #6B2510;   /* texto sobre fundo laranja claro */
+    /* marca */
+    --accent: #CC7C5E;          /* terra */
+    --accent-dark: #9C563B;     /* terra tinta */
+    --accent-light: #DCA089;
+    --accent-glow: rgba(204, 124, 94, 0.12);
+    --accent-tint: #F6E7DF;
+    --accent-texto: #7E4229;
+    --vermelho: #BE3A22;
 
     /* traços */
-    --border: #E8E8EC;
-    --border-strong: #DBDBE1;
-    --borda-vidro: rgba(255, 255, 255, 0.7);
+    --border: rgba(9, 9, 11, 0.12);
+    --border-strong: rgba(9, 9, 11, 0.22);
 
     /* estados */
-    --ok: #2D7A4F;
-    --ok-bg: rgba(45, 122, 79, 0.10);
-    --warn: #B45309;
-    --warn-bg: rgba(245, 158, 11, 0.15);
-    --danger: #DC2626;
-    --danger-bg: rgba(220, 38, 38, 0.09);
-    --info: #3B82F6;
-    --info-bg: rgba(59, 130, 246, 0.10);
+    --ok: #4B7A50;
+    --ok-bg: rgba(75, 122, 80, 0.12);
+    --warn: #9C6212;
+    --warn-bg: #FEF7CF;
+    --danger: #BE3A22;
+    --danger-bg: rgba(190, 58, 34, 0.10);
+    --info: #4A6A82;
+    --info-bg: rgba(74, 106, 130, 0.10);
 
-    /* forma · cantos grandes e pílulas */
-    --r-sm: 12px;
-    --r: 16px;
-    --r-lg: 24px;
-    --r-pill: 100px;
+    /* forma · cantos quase retos, como na página de vendas */
+    --r-sm: 4px;
+    --r: 6px;
+    --r-lg: 8px;
+    --r-pill: 3px;
 
-    /* sombra de vidro: camadas suaves e neutras, com brilho no topo */
-    --brilho: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
-    --sh-xs: 0 1px 3px rgba(0, 0, 0, 0.03);
-    --sh-sm: 0 1px 4px rgba(0, 0, 0, 0.03), 0 2px 12px rgba(0, 0, 0, 0.04);
-    --sh-md: 0 2px 8px rgba(0, 0, 0, 0.04), 0 4px 20px rgba(0, 0, 0, 0.06);
-    --sh-lg: 0 8px 32px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.06);
+    /* sombra dura, sem desfoque, empilhada no tom da marca */
+    --sh-dura: 0 3px 0 rgba(156, 86, 59, 0.5);
+    --sh-xs: 0 1px 0 rgba(9, 9, 11, 0.05);
+    --sh-sm: 0 1px 2px rgba(9, 9, 11, 0.06);
+    --sh-md: 0 2px 10px rgba(9, 9, 11, 0.08);
+    --sh-lg: 0 18px 44px rgba(9, 9, 11, 0.18);
 
     --sidebar-w: 248px;
     --topbar-h: 64px;
+    --grao: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
 }
 
 * { box-sizing: border-box; }
@@ -82,18 +83,15 @@ html, body {
 
 body {
     background: var(--bg);
-    background-image:
-        radial-gradient(760px 420px at 12% -6%, rgba(200, 68, 26, 0.07), transparent 62%),
-        radial-gradient(680px 380px at 92% 4%, rgba(200, 68, 26, 0.045), transparent 60%);
-    background-attachment: fixed;
+    font-feature-settings: 'kern';
     color: var(--ink);
-    font-family: 'Geist', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    font-size: 14.5px;
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    font-size: 15px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4 { margin: 0; font-weight: 700; letter-spacing: -0.022em; }
+h1, h2, h3, h4 { margin: 0; font-family: 'Be Vietnam Pro', system-ui, sans-serif; font-weight: 700; letter-spacing: -0.02em; }
 
 button, input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
 
@@ -102,14 +100,15 @@ a { color: var(--accent); }
 ::selection { background: var(--accent-tint); }
 
 /* ---------- tipografia utilitária ---------- */
-.serif, .display { font-weight: 700; letter-spacing: -0.03em; }
+.serif, .display { font-family: 'Be Vietnam Pro', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; }
 .mono { font-family: 'DM Mono', ui-monospace, monospace; font-feature-settings: 'tnum'; }
 .eyebrow {
+    font-family: 'DM Mono', monospace;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--soft);
 }
 .dim { color: var(--soft); }
 .muted { color: var(--muted); }
@@ -120,13 +119,23 @@ a { color: var(--accent); }
 
 .shell { display: flex; min-height: 100vh; }
 
+/* grão de papel, igual ao da página de vendas */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: var(--grao);
+    opacity: 0.035;
+    pointer-events: none;
+    z-index: 999;
+    mix-blend-mode: multiply;
+}
+
 /* ---------- sidebar ---------- */
 .sidebar {
     width: var(--sidebar-w);
     flex-shrink: 0;
     background: rgba(255, 255, 255, 0.78);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
@@ -146,9 +155,9 @@ a { color: var(--accent); }
 .brand-mark {
     width: 34px;
     height: 34px;
-    border-radius: 11px;
-    background: linear-gradient(135deg, var(--accent), #A3521F);
-    box-shadow: 0 2px 8px rgba(200, 68, 26, 0.28);
+    border-radius: var(--r-sm);
+    background: var(--accent);
+    box-shadow: var(--sh-dura);
     color: #fff;
     display: grid;
     place-items: center;
@@ -159,11 +168,11 @@ a { color: var(--accent); }
 }
 
 .brand-name {
-    font-weight: 700;
+    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
     font-size: 17px;
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.1;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
 }
 .brand-sub { font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
 
@@ -196,7 +205,7 @@ a { color: var(--accent); }
     padding: 9px 13px;
     border: none;
     background: none;
-    border-radius: var(--r-pill);
+    border-radius: var(--r-sm);
     font-size: 14px;
     font-weight: 600;
     color: var(--soft);
@@ -208,19 +217,28 @@ a { color: var(--accent); }
 .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
 .nav-item:hover { background: var(--surface-2); color: var(--ink); }
 .nav-item.active { background: var(--accent-glow); color: var(--accent); }
-.nav-item.active { font-weight: 600; }
+.nav-item.active { font-weight: 700; }
+.nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    background: var(--accent);
+}
 .nav-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .nav-badge {
     margin-left: auto;
-    background: var(--accent);
+    background: var(--vermelho);
     color: #fff;
     font-size: 10px;
     font-weight: 700;
     min-width: 18px;
     height: 18px;
     padding: 0 5px;
-    border-radius: 9px;
+    border-radius: 3px;
     display: grid;
     place-items: center;
 }
@@ -235,7 +253,7 @@ a { color: var(--accent); }
 .me { display: flex; align-items: center; gap: 10px; }
 .me-avatar {
     width: 34px; height: 34px;
-    border-radius: 50%;
+    border-radius: var(--r-sm);
     background: var(--accent-tint);
     color: var(--accent);
     display: grid; place-items: center;
@@ -252,8 +270,6 @@ a { color: var(--accent); }
     height: var(--topbar-h);
     flex-shrink: 0;
     background: rgba(245, 245, 247, 0.72);
-    backdrop-filter: blur(18px) saturate(180%);
-    -webkit-backdrop-filter: blur(18px) saturate(180%);
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
@@ -275,7 +291,7 @@ a { color: var(--accent); }
 }
 .menu-btn svg { width: 18px; height: 18px; display: block; }
 
-.page-title { font-weight: 700; font-size: 21px; letter-spacing: -0.02em; }
+.page-title { font-family: 'Be Vietnam Pro', system-ui, sans-serif; font-weight: 800; font-size: 21px; letter-spacing: -0.03em; }
 .page-hint { font-size: 12.5px; color: var(--muted); margin-top: 1px; }
 
 .topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 9px; }
@@ -327,20 +343,18 @@ a { color: var(--accent); }
     margin-bottom: 14px;
     flex-wrap: wrap;
 }
-.section-head h2 { font-weight: 700; font-size: 19px; letter-spacing: -0.02em; }
+.section-head h2 { font-family: 'Be Vietnam Pro', system-ui, sans-serif; font-weight: 800; font-size: 19px; letter-spacing: -0.03em; }
 .section-head p { margin: 2px 0 0; font-size: 13px; color: var(--soft); }
 .section-head .spacer { margin-left: auto; }
 
 .panel {
-    background: var(--vidro);
-    backdrop-filter: blur(18px) saturate(180%);
-    -webkit-backdrop-filter: blur(18px) saturate(180%);
-    border: 1px solid var(--borda-vidro);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: var(--r-lg);
-    box-shadow: var(--sh-sm), var(--brilho);
+    box-shadow: var(--sh-xs);
     transition: box-shadow 0.25s ease;
 }
-.panel:hover { box-shadow: var(--sh-md), var(--brilho); }
+.panel:hover { box-shadow: var(--sh-sm); }
 .panel-head {
     padding: 15px 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.045);
@@ -367,20 +381,19 @@ a { color: var(--accent); }
     gap: 14px;
 }
 .stat {
-    background: var(--vidro);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid var(--borda-vidro);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: var(--r);
     padding: 16px 18px 15px;
-    box-shadow: var(--sh-sm), var(--brilho);
+    box-shadow: var(--sh-xs);
     transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
-.stat:hover { box-shadow: var(--sh-md), var(--brilho); transform: translateY(-1px); }
+.stat:hover { box-shadow: var(--sh-sm); transform: translateY(-1px); }
 .stat-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--muted);
     display: flex;
@@ -388,8 +401,9 @@ a { color: var(--accent); }
     gap: 6px;
 }
 .stat-value {
+    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
     font-size: 25px;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: -0.035em;
     margin-top: 6px;
     line-height: 1.1;
@@ -406,11 +420,10 @@ a { color: var(--accent); }
     justify-content: center;
     gap: 7px;
     padding: 9px 16px;
-    border-radius: var(--r-pill);
-    border: 1px solid var(--border);
-    background: var(--vidro-forte);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
     color: var(--ink);
     font-size: 13.5px;
     font-weight: 600;
@@ -419,7 +432,7 @@ a { color: var(--accent); }
     white-space: nowrap;
 }
 .btn svg { width: 16px; height: 16px; }
-.btn:hover { background: #fff; border-color: var(--border-strong); box-shadow: var(--sh-xs); }
+.btn:hover { background: var(--surface-2); border-color: var(--ink); }
 .btn:active { transform: translateY(1px); }
 .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
@@ -427,8 +440,10 @@ a { color: var(--accent); }
     background: var(--accent);
     border-color: var(--accent);
     color: #fff;
+    box-shadow: var(--sh-dura);
 }
 .btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+.btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(156, 86, 59, 0.5); }
 
 .btn-ghost { border-color: transparent; background: transparent; color: var(--soft); }
 .btn-ghost:hover { background: var(--surface-2); color: var(--ink); border-color: transparent; }
@@ -442,7 +457,7 @@ a { color: var(--accent); }
 .icon-btn {
     width: 32px; height: 32px;
     display: grid; place-items: center;
-    border-radius: 50%;
+    border-radius: var(--r-sm);
     border: 1px solid transparent;
     background: none;
     color: var(--soft);
@@ -457,8 +472,8 @@ a { color: var(--accent); }
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 3px 9px;
-    border-radius: 999px;
+    padding: 3px 8px;
+    border-radius: 3px;
     font-size: 11.5px;
     font-weight: 700;
     letter-spacing: 0.01em;
@@ -478,9 +493,10 @@ a { color: var(--accent); }
 table.data { width: 100%; border-collapse: collapse; font-size: 14px; }
 table.data th {
     text-align: left;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
     padding: 11px 16px;
@@ -563,12 +579,10 @@ td.acts { text-align: right; white-space: nowrap; }
 
 .chips { display: flex; gap: 6px; flex-wrap: wrap; }
 .chip {
-    padding: 7px 14px;
-    border-radius: var(--r-pill);
-    border: 1px solid var(--border);
-    background: var(--vidro-forte);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    padding: 7px 13px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
     font-size: 12.5px;
     font-weight: 600;
     color: var(--soft);
@@ -591,10 +605,8 @@ td.acts { text-align: right; white-space: nowrap; }
 }
 .col {
     background: rgba(255, 255, 255, 0.42);
-    border: 1px solid var(--borda-vidro);
+    border: 1px solid var(--border);
     border-radius: var(--r-lg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
     min-height: 130px;
@@ -610,12 +622,13 @@ td.acts { text-align: right; white-space: nowrap; }
 .col-head h4 { font-size: 12.5px; letter-spacing: 0.02em; }
 .col-count {
     margin-left: auto;
+    font-family: 'DM Mono', monospace;
     font-size: 11px;
-    font-weight: 700;
-    color: var(--muted);
+    font-weight: 500;
+    color: var(--soft);
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 999px;
+    border-radius: 3px;
     padding: 1px 7px;
 }
 .col-total {
@@ -633,17 +646,15 @@ td.acts { text-align: right; white-space: nowrap; }
 }
 
 .card {
-    background: var(--vidro-forte);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--borda-vidro);
-    border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
     padding: 13px 14px;
     cursor: grab;
-    box-shadow: var(--sh-xs), var(--brilho);
+    box-shadow: var(--sh-xs);
     transition: box-shadow 0.16s, transform 0.16s, border-color 0.16s;
 }
-.card:hover { box-shadow: var(--sh-md), var(--brilho); transform: translateY(-2px); }
+.card:hover { box-shadow: var(--sh-sm); transform: translateY(-2px); }
 .card:active { cursor: grabbing; }
 .card.dragging { opacity: 0.45; transform: rotate(1.4deg) scale(0.98); }
 .card-top { display: flex; align-items: flex-start; gap: 8px; }
@@ -659,7 +670,7 @@ td.acts { text-align: right; white-space: nowrap; }
 .card-money { font-family: 'DM Mono', monospace; font-size: 13.5px; font-weight: 500; }
 .card-avatar {
     width: 28px; height: 28px;
-    border-radius: 8px;
+    border-radius: 4px;
     background: var(--accent-tint);
     color: var(--accent);
     display: grid; place-items: center;
@@ -682,7 +693,7 @@ td.acts { text-align: right; white-space: nowrap; }
 .check-box {
     width: 19px; height: 19px;
     border: 1.5px solid var(--border-strong);
-    border-radius: 7px;
+    border-radius: 4px;
     flex-shrink: 0;
     margin-top: 1px;
     display: grid;
@@ -703,25 +714,23 @@ td.acts { text-align: right; white-space: nowrap; }
 .progress {
     height: 6px;
     background: var(--warm);
-    border-radius: 999px;
+    border-radius: 2px;
     overflow: hidden;
 }
 .progress > span {
     display: block;
     height: 100%;
     background: var(--accent);
-    border-radius: 999px;
+    border-radius: 2px;
     transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ---------- blocos copiáveis (roteiros, mensagens) ---------- */
 .snippet {
-    border: 1px solid var(--borda-vidro);
+    border: 1px solid var(--border);
     border-radius: var(--r-lg);
-    background: var(--vidro);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    box-shadow: var(--sh-xs), var(--brilho);
+    background: var(--surface);
+    box-shadow: var(--sh-xs);
     overflow: hidden;
 }
 .snippet-head {
@@ -742,8 +751,8 @@ td.acts { text-align: right; white-space: nowrap; }
     color: var(--ink);
 }
 .snippet-body .ph {
-    background: var(--accent-tint);
-    color: var(--accent-texto);
+    background: var(--manteiga);
+    color: #6B5310;
     padding: 1px 5px;
     border-radius: 5px;
     font-weight: 600;
@@ -774,7 +783,6 @@ td.acts { text-align: right; white-space: nowrap; }
     position: fixed;
     inset: 0;
     background: rgba(33, 29, 26, 0.42);
-    backdrop-filter: blur(3px);
     z-index: 100;
     display: flex;
     align-items: flex-start;
@@ -787,11 +795,9 @@ td.acts { text-align: right; white-space: nowrap; }
 
 .modal {
     background: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid var(--borda-vidro);
-    border-radius: 26px;
-    box-shadow: var(--sh-lg), var(--brilho);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    box-shadow: var(--sh-lg);
     width: 100%;
     max-width: 560px;
     animation: modalIn 0.26s cubic-bezier(0.16, 1, 0.3, 1);
@@ -809,7 +815,7 @@ td.acts { text-align: right; white-space: nowrap; }
     align-items: flex-start;
     gap: 12px;
 }
-.modal-head h3 { font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
+.modal-head h3 { font-family: 'Be Vietnam Pro', system-ui, sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.03em; }
 .modal-head p { margin: 3px 0 0; font-size: 13px; color: var(--soft); }
 .modal-body { padding: 22px 24px; }
 .modal-foot {
@@ -835,11 +841,9 @@ td.acts { text-align: right; white-space: nowrap; }
 }
 .toast {
     background: rgba(18, 18, 18, 0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     color: #fff;
     padding: 11px 18px;
-    border-radius: var(--r-pill);
+    border-radius: var(--r-sm);
     font-size: 13.5px;
     font-weight: 600;
     box-shadow: var(--sh-lg);
@@ -870,7 +874,7 @@ td.acts { text-align: right; white-space: nowrap; }
     width: 100%;
     max-width: 46px;
     background: var(--accent);
-    border-radius: 6px 6px 3px 3px;
+    border-radius: 3px 3px 0 0;
     min-height: 3px;
     position: relative;
     transition: height 0.7s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s;
@@ -942,7 +946,7 @@ td.acts { text-align: right; white-space: nowrap; }
 .note b { font-weight: 700; }
 .note.info { background: var(--info-bg); color: var(--info); }
 .note.ok { background: var(--ok-bg); color: var(--ok); }
-.note.accent { background: var(--accent-tint); color: var(--accent-texto); }
+.note.accent { background: var(--manteiga); color: #6B5310; }
 
 /* ---------- sub navegação ---------- */
 .subnav {
@@ -950,33 +954,27 @@ td.acts { text-align: right; white-space: nowrap; }
     gap: 5px;
     margin-bottom: 22px;
     overflow-x: auto;
-    padding: 5px;
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid var(--borda-vidro);
-    border-radius: var(--r-pill);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    width: fit-content;
-    max-width: 100%;
+    padding: 0;
+    border-bottom: 1px solid var(--border);
+    width: 100%;
 }
 .subnav button {
-    padding: 9px 16px;
+    padding: 11px 15px;
     border: none;
     background: none;
-    border-radius: var(--r-pill);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
     font-size: 13.5px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--soft);
     cursor: pointer;
     white-space: nowrap;
-    transition: all 0.2s ease;
+    transition: color 0.15s ease, border-color 0.15s ease;
 }
-.subnav button:hover { color: var(--ink); background: rgba(255, 255, 255, 0.7); }
+.subnav button:hover { color: var(--ink); }
 .subnav button.on {
-    background: #fff;
-    color: var(--ink);
-    font-weight: 600;
-    box-shadow: var(--sh-xs);
+    color: var(--accent-dark);
+    border-bottom-color: var(--accent);
 }
 .subnav button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 
@@ -1071,11 +1069,9 @@ td.acts { text-align: right; white-space: nowrap; }
     position: relative;
     padding: 28px 30px 26px;
     border-radius: var(--r-lg);
-    background: var(--vidro);
-    backdrop-filter: blur(18px) saturate(180%);
-    -webkit-backdrop-filter: blur(18px) saturate(180%);
-    border: 1px solid var(--borda-vidro);
-    box-shadow: var(--sh-sm), var(--brilho);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--sh-xs);
     overflow: hidden;
     margin-bottom: 22px;
 }
@@ -1090,9 +1086,10 @@ td.acts { text-align: right; white-space: nowrap; }
     user-select: none;
 }
 .hero h2 {
-    font-weight: 700;
+    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    font-weight: 800;
     font-size: clamp(22px, 2.6vw, 29px);
-    letter-spacing: -0.03em;
+    letter-spacing: -0.035em;
     position: relative;
 }
 .hero p {
@@ -1109,11 +1106,10 @@ td.acts { text-align: right; white-space: nowrap; }
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: var(--vidro-forte);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid var(--borda-vidro);
-    border-radius: var(--r-pill);
+    font-family: 'DM Mono', monospace;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
     padding: 7px 15px;
     font-size: 13px;
     color: var(--soft);
@@ -1131,7 +1127,7 @@ td.acts { text-align: right; white-space: nowrap; }
 }
 .filtros .search { max-width: 320px; }
 .filtros .search input {
-    border-radius: 999px;
+    border-radius: var(--r-sm);
     padding-top: 11px;
     padding-bottom: 11px;
     box-shadow: var(--sh-xs);
@@ -1143,12 +1139,10 @@ td.acts { text-align: right; white-space: nowrap; }
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 11px 17px;
-    border-radius: var(--r-pill);
-    border: 1px solid var(--border);
-    background: var(--vidro-forte);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    padding: 10px 15px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
     font-size: 13.5px;
     font-weight: 600;
     cursor: pointer;
@@ -1168,10 +1162,8 @@ td.acts { text-align: right; white-space: nowrap; }
     left: 0;
     min-width: 220px;
     background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid var(--borda-vidro);
-    border-radius: 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     box-shadow: var(--sh-lg);
     padding: 7px;
     z-index: 50;
@@ -1191,7 +1183,7 @@ td.acts { text-align: right; white-space: nowrap; }
     padding: 10px 14px;
     border: none;
     background: none;
-    border-radius: 12px;
+    border-radius: var(--r-sm);
     font-size: 14px;
     font-weight: 600;
     color: var(--soft);
@@ -1211,12 +1203,10 @@ td.acts { text-align: right; white-space: nowrap; }
 }
 
 .ref-card {
-    box-shadow: var(--sh-xs), var(--brilho);
-    background: var(--vidro);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid var(--borda-vidro);
-    border-radius: 20px;
+    box-shadow: var(--sh-xs);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s, border-color 0.2s;
@@ -1228,7 +1218,7 @@ td.acts { text-align: right; white-space: nowrap; }
     color: inherit;
     width: 100%;
 }
-.ref-card:hover { transform: translateY(-3px); box-shadow: var(--sh-md), var(--brilho); }
+.ref-card:hover { transform: translateY(-3px); box-shadow: var(--sh-sm); }
 .ref-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .ref-capa {
@@ -1252,8 +1242,7 @@ td.acts { text-align: right; white-space: nowrap; }
     top: 11px;
     left: 11px;
     background: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(6px);
-    border-radius: 999px;
+    border-radius: 3px;
     padding: 5px 11px;
     font-size: 11.5px;
     font-weight: 700;
@@ -1266,9 +1255,8 @@ td.acts { text-align: right; white-space: nowrap; }
     right: 11px;
     width: 34px;
     height: 34px;
-    border-radius: 50%;
+    border-radius: 3px;
     background: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(6px);
     display: grid;
     place-items: center;
     box-shadow: var(--sh-sm);
@@ -1281,9 +1269,9 @@ td.acts { text-align: right; white-space: nowrap; }
     position: absolute;
     bottom: 13px;
     left: 11px;
-    background: rgba(33, 29, 26, 0.72);
+    background: rgba(9, 9, 11, 0.78);
     color: #fff;
-    border-radius: 999px;
+    border-radius: 3px;
     padding: 3px 9px;
     font-size: 11px;
     font-weight: 600;
@@ -1332,18 +1320,16 @@ td.acts { text-align: right; white-space: nowrap; }
 
 /* ---------- seções do checklist ---------- */
 .cl-sec {
-    background: var(--vidro);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid var(--borda-vidro);
-    border-radius: 20px;
-    box-shadow: var(--sh-xs), var(--brilho);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    box-shadow: var(--sh-xs);
     overflow: hidden;
     margin-bottom: 14px;
     transition: border-color 0.18s, box-shadow 0.18s;
 }
-.cl-sec:hover { box-shadow: var(--sh-sm), var(--brilho); }
-.cl-sec.aberta { box-shadow: var(--sh-md), var(--brilho); }
+.cl-sec:hover { box-shadow: var(--sh-xs); }
+.cl-sec.aberta { box-shadow: var(--sh-sm); }
 
 .cl-head {
     display: flex;
@@ -1364,7 +1350,7 @@ td.acts { text-align: right; white-space: nowrap; }
 .cl-emoji {
     width: 46px;
     height: 46px;
-    border-radius: 15px;
+    border-radius: var(--r);
     background: var(--accent-tint);
     display: grid;
     place-items: center;
@@ -1414,16 +1400,15 @@ td.acts { text-align: right; white-space: nowrap; }
     align-items: center;
     gap: 26px;
     flex-wrap: wrap;
-    background: var(--vidro);
-    backdrop-filter: blur(18px) saturate(180%);
-    -webkit-backdrop-filter: blur(18px) saturate(180%);
-    border: 1px solid var(--borda-vidro);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: var(--r-lg);
-    box-shadow: var(--sh-sm), var(--brilho);
+    box-shadow: var(--sh-xs);
     padding: 26px 30px;
     margin-bottom: 22px;
 }
 .placar-num {
+    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
     font-weight: 800;
     font-size: clamp(38px, 5vw, 52px);
     line-height: 1;
@@ -1494,7 +1479,7 @@ td.acts { text-align: right; white-space: nowrap; }
 
 </style>
 </head>
-<body data-versao-local="2026-09-09">
+<body data-versao-local="2026-09-10">
 
 <div class="shell">
 
